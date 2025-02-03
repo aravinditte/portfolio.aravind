@@ -12,14 +12,7 @@
   ],
   "license": "MIT",
   "browserslist": "> 0.25%, not dead",
-  "resolutions": {
-  "sharp": "^0.32.0"
-},
-
-  "engines": {
-  "node": ">=16.0.0"
-},
-
+  
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
