@@ -9,8 +9,6 @@ This is my personal portfolio website, built using **Gatsby** and powered by **N
 - ⚡ **Blazing Fast Performance** with Gatsby's static site generation.
 - 🎨 **Modern & Responsive Design** for all devices.
 - 📁 **Project Showcase** with interactive UI elements.
-- ✨ **SEO Optimized** for better search engine visibility.
-- 📬 **Contact Form** for easy communication.
 
 ## 🛠️ Tech Stack
 - **Frontend**: Gatsby, React, GraphQL
