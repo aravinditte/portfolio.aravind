@@ -1,0 +1,32 @@
+{
+  "expireTime": 9007200993345138000,
+  "key": "transformer-remark-markdown-html-ast-fadc1eb215bd3062daf3e9bb79cfc9b1-gatsby-remark-external-linksgatsby-remark-imagesgatsby-remark-code-titlesgatsby-remark-prismjs-",
+  "val": {
+    "type": "root",
+    "children": [
+      {
+        "type": "element",
+        "tagName": "p",
+        "properties": {},
+        "children": [
+          {
+            "type": "text",
+            "value": "Multi-Window Synchronization: Using localStorage, the 3D scene's state is synchronized across multiple browser windows.Three.js Integration: Leveraging the power of three.js to render 3D graphics. Responsive Design: The 3D scene adjusts to different window sizes, maintaining its visual consistency.",
+            "position": {
+              "start": { "line": 2, "column": 1, "offset": 1 },
+              "end": { "line": 2, "column": 300, "offset": 300 }
+            }
+          }
+        ],
+        "position": {
+          "start": { "line": 2, "column": 1, "offset": 1 },
+          "end": { "line": 2, "column": 300, "offset": 300 }
+        }
+      }
+    ],
+    "position": {
+      "start": { "line": 1, "column": 1, "offset": 0 },
+      "end": { "line": 3, "column": 1, "offset": 301 }
+    }
+  }
+}

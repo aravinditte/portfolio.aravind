@@ -1,0 +1,5 @@
+{
+  "expireTime": 9007200993345139000,
+  "key": "transformer-remark-markdown-html-1c62a2e2df4b2ed11f234cb289abdf75-gatsby-remark-external-linksgatsby-remark-imagesgatsby-remark-code-titlesgatsby-remark-prismjs-",
+  "val": "<p>A web-based application for removing image backgrounds, built with Django, PHP, and JavaScript. This tool allows users to upload images, process them to remove backgrounds, and download the results. It leverages Django for backend processing, PHP for server-side operations, and JavaScript for a seamless user interface.</p>"
+}

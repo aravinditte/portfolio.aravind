@@ -1,0 +1,109 @@
+{
+  "expireTime": 9007200993345136000,
+  "key": "transformer-remark-markdown-ast-9b345ddf4c3cf9c9f4e70b2cfd5922c4-gatsby-remark-external-linksgatsby-remark-imagesgatsby-remark-code-titlesgatsby-remark-prismjs-",
+  "val": {
+    "type": "root",
+    "children": [
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Managed content for the E-Cell and organized event scripts and marketing materials",
+                    "position": {
+                      "start": { "line": 2, "column": 3, "offset": 3 },
+                      "end": { "line": 2, "column": 85, "offset": 85 }
+                    }
+                  }
+                ],
+                "position": {
+                  "start": { "line": 2, "column": 3, "offset": 3 },
+                  "end": { "line": 2, "column": 85, "offset": 85 }
+                }
+              }
+            ],
+            "position": {
+              "start": { "line": 2, "column": 1, "offset": 1 },
+              "end": { "line": 2, "column": 85, "offset": 85 }
+            }
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Created engaging written content for social media campaigns, newsletters, and blogs",
+                    "position": {
+                      "start": { "line": 3, "column": 3, "offset": 88 },
+                      "end": { "line": 3, "column": 86, "offset": 171 }
+                    }
+                  }
+                ],
+                "position": {
+                  "start": { "line": 3, "column": 3, "offset": 88 },
+                  "end": { "line": 3, "column": 86, "offset": 171 }
+                }
+              }
+            ],
+            "position": {
+              "start": { "line": 3, "column": 1, "offset": 86 },
+              "end": { "line": 3, "column": 86, "offset": 171 }
+            }
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Collaborated with teams to ensure alignment of messaging across various platforms and initiatives",
+                    "position": {
+                      "start": { "line": 4, "column": 3, "offset": 174 },
+                      "end": { "line": 4, "column": 100, "offset": 271 }
+                    }
+                  }
+                ],
+                "position": {
+                  "start": { "line": 4, "column": 3, "offset": 174 },
+                  "end": { "line": 4, "column": 100, "offset": 271 }
+                }
+              }
+            ],
+            "position": {
+              "start": { "line": 4, "column": 1, "offset": 172 },
+              "end": { "line": 4, "column": 100, "offset": 271 }
+            }
+          }
+        ],
+        "position": {
+          "start": { "line": 2, "column": 1, "offset": 1 },
+          "end": { "line": 4, "column": 100, "offset": 271 }
+        }
+      }
+    ],
+    "position": {
+      "start": { "line": 1, "column": 1, "offset": 0 },
+      "end": { "line": 5, "column": 1, "offset": 272 }
+    }
+  }
+}

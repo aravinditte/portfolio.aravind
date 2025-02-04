@@ -1,0 +1,83 @@
+{
+  "expireTime": 9007200993345136000,
+  "key": "transformer-remark-markdown-html-ast-ad626f43448e3888f90eaef0d8d6d4ed-gatsby-remark-external-linksgatsby-remark-imagesgatsby-remark-code-titlesgatsby-remark-prismjs-",
+  "val": {
+    "type": "root",
+    "children": [
+      {
+        "type": "element",
+        "tagName": "p",
+        "properties": {},
+        "children": [
+          {
+            "type": "text",
+            "value": "Looking at people struggle convert a research paper into code, I thought this skill is a must.",
+            "position": {
+              "start": { "line": 2, "column": 1, "offset": 1 },
+              "end": { "line": 2, "column": 95, "offset": 95 }
+            }
+          }
+        ],
+        "position": {
+          "start": { "line": 2, "column": 1, "offset": 1 },
+          "end": { "line": 2, "column": 95, "offset": 95 }
+        }
+      },
+      { "type": "text", "value": "\n" },
+      {
+        "type": "element",
+        "tagName": "p",
+        "properties": {},
+        "children": [
+          {
+            "type": "text",
+            "value": "And I developed a facial recognition system based on the 2019 Convolutional Siamese Networks paper, successfully turning a complex research idea into a working project.",
+            "position": {
+              "start": { "line": 4, "column": 1, "offset": 97 },
+              "end": { "line": 4, "column": 169, "offset": 265 }
+            }
+          },
+          {
+            "type": "element",
+            "tagName": "a",
+            "properties": {
+              "href": "https://www.cs.cmu.edu/~rsalakhu/papers/oneshot1.pdf",
+              "target": "_blank",
+              "rel": "nofollow noopener noreferrer"
+            },
+            "children": [
+              {
+                "type": "text",
+                "value": "Research Paper",
+                "position": {
+                  "start": { "line": 4, "column": 170, "offset": 266 },
+                  "end": { "line": 4, "column": 184, "offset": 280 }
+                }
+              }
+            ],
+            "position": {
+              "start": { "line": 4, "column": 169, "offset": 265 },
+              "end": { "line": 4, "column": 239, "offset": 335 }
+            }
+          },
+          {
+            "type": "text",
+            "value": ".",
+            "position": {
+              "start": { "line": 4, "column": 239, "offset": 335 },
+              "end": { "line": 4, "column": 240, "offset": 336 }
+            }
+          }
+        ],
+        "position": {
+          "start": { "line": 4, "column": 1, "offset": 97 },
+          "end": { "line": 4, "column": 240, "offset": 336 }
+        }
+      }
+    ],
+    "position": {
+      "start": { "line": 1, "column": 1, "offset": 0 },
+      "end": { "line": 5, "column": 1, "offset": 337 }
+    }
+  }
+}
