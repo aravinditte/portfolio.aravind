@@ -1,6 +1,6 @@
 # 🚀 My Portfolio - Built with Gatsby
 
-![Portfolio Preview](https://your-image-url.com) <!-- Add a screenshot of your portfolio -->
+![image](https://github.com/user-attachments/assets/728ff26e-7bce-469f-9d1f-c74f786398f6)
 
 ## 📌 Overview
 This is my personal portfolio website, built using **Gatsby** and powered by **Node.js v18**. It showcases my projects, skills, and experience in web development, AI, and machine learning.
