@@ -59,6 +59,13 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-react-helmet`,
+      options: {
+        // Add this if using TypeScript
+        // exclude: ["node_modules"],
+      },
+    },
+    {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
