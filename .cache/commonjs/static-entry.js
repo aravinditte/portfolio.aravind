@@ -1,61 +1,39 @@
-"use strict";
+'use strict';
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
 
 exports.__esModule = true;
 exports.default = exports.sanitizeComponents = void 0;
 
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+var _extends2 = _interopRequireDefault(require('@babel/runtime/helpers/extends'));
 
 const React = require(`react`);
 
 const path = require(`path`);
 
-const {
-  renderToString,
-  renderToStaticMarkup
-} = require(`react-dom/server`);
+const { renderToString, renderToStaticMarkup } = require(`react-dom/server`);
 
-const {
-  ServerLocation,
-  Router,
-  isRedirect
-} = require(`@gatsbyjs/reach-router`);
+const { ServerLocation, Router, isRedirect } = require(`@gatsbyjs/reach-router`);
 
-const {
-  merge,
-  flattenDeep,
-  replace
-} = require(`lodash`);
+const { merge, flattenDeep, replace } = require(`lodash`);
 
-const {
-  StaticQueryContext
-} = require(`gatsby`);
+const { StaticQueryContext } = require(`gatsby`);
 
 const fs = require(`fs`);
 
-const {
-  RouteAnnouncerProps
-} = require(`./route-announcer-props`);
+const { RouteAnnouncerProps } = require(`./route-announcer-props`);
 
 const apiRunner = require(`./api-runner-ssr`);
 
 const syncRequires = require(`$virtual/sync-requires`);
 
-const {
-  version: gatsbyVersion
-} = require(`gatsby/package.json`);
+const { version: gatsbyVersion } = require(`gatsby/package.json`);
 
-const {
-  grabMatchParams
-} = require(`./find-path`);
+const { grabMatchParams } = require(`./find-path`);
 
 const chunkMapping = require(`../public/chunk-map.json`); // we want to force posix-style joins, so Windows doesn't produce backslashes for urls
 
-
-const {
-  join
-} = path.posix; // const testRequireError = require("./test-require-error")
+const { join } = path.posix; // const testRequireError = require("./test-require-error")
 // For some extremely mysterious reason, webpack adds the above module *after*
 // this module so that when this code runs, testRequireError is undefined.
 // So in the meantime, we'll just inline it.
@@ -105,7 +83,7 @@ const sanitizeComponents = components => {
     // And not asset server when an assetPrefix is used
     if (__ASSET_PREFIX__ && component.props.rel === `manifest`) {
       return React.cloneElement(component, {
-        href: replace(component.props.href, __ASSET_PREFIX__, ``)
+        href: replace(component.props.href, __ASSET_PREFIX__, ``),
       });
     }
 
@@ -118,7 +96,7 @@ exports.sanitizeComponents = sanitizeComponents;
 const ensureArray = components => {
   if (Array.isArray(components)) {
     // remove falsy items and flatten
-    return flattenDeep(components.filter(val => Array.isArray(val) ? val.length > 0 : val));
+    return flattenDeep(components.filter(val => (Array.isArray(val) ? val.length > 0 : val)));
   } else {
     // we also accept single components, so we need to handle this case as well
     return components ? [components] : [];
@@ -132,18 +110,20 @@ var _default = ({
   styles,
   scripts,
   reversedStyles,
-  reversedScripts
+  reversedScripts,
 }) => {
   // for this to work we need this function to be sync or at least ensure there is single execution of it at a time
   global.unsafeBuiltinUsage = [];
 
   try {
     let bodyHtml = ``;
-    let headComponents = [/*#__PURE__*/React.createElement("meta", {
-      name: "generator",
-      content: `Gatsby ${gatsbyVersion}`,
-      key: `generator-${gatsbyVersion}`
-    })];
+    let headComponents = [
+      /*#__PURE__*/ React.createElement('meta', {
+        name: 'generator',
+        content: `Gatsby ${gatsbyVersion}`,
+        key: `generator-${gatsbyVersion}`,
+      }),
+    ];
     let htmlAttributes = {};
     let bodyAttributes = {};
     let preBodyComponents = [];
@@ -162,7 +142,7 @@ var _default = ({
       try {
         // deprecation notice
         const myErrorHolder = {
-          name: `Usage of loadPageDataSync for page other than currently generated page disables incremental html generation in future builds`
+          name: `Usage of loadPageDataSync for page other than currently generated page disables incremental html generation in future builds`,
         };
         Error.captureStackTrace(myErrorHolder, loadPageDataSync);
         global.unsafeBuiltinUsage.push(myErrorHolder.stack);
@@ -221,60 +201,82 @@ var _default = ({
     };
 
     const pageDataUrl = getPageDataUrl(pagePath);
-    const {
-      componentChunkName,
-      staticQueryHashes = []
-    } = pageData;
+    const { componentChunkName, staticQueryHashes = [] } = pageData;
     const staticQueryUrls = staticQueryHashes.map(getStaticQueryUrl);
 
     class RouteHandler extends React.Component {
       render() {
         var _pageData$result, _pageData$result$page;
 
-        const props = { ...this.props,
+        const props = {
+          ...this.props,
           ...pageData.result,
-          params: { ...grabMatchParams(this.props.location.pathname),
-            ...(((_pageData$result = pageData.result) === null || _pageData$result === void 0 ? void 0 : (_pageData$result$page = _pageData$result.pageContext) === null || _pageData$result$page === void 0 ? void 0 : _pageData$result$page.__params) || {})
-          }
+          params: {
+            ...grabMatchParams(this.props.location.pathname),
+            ...(((_pageData$result = pageData.result) === null || _pageData$result === void 0
+              ? void 0
+              : (_pageData$result$page = _pageData$result.pageContext) === null ||
+                _pageData$result$page === void 0
+              ? void 0
+              : _pageData$result$page.__params) || {}),
+          },
         };
         const pageElement = createElement(syncRequires.components[componentChunkName], props);
-        const wrappedPage = apiRunner(`wrapPageElement`, {
-          element: pageElement,
-          props
-        }, pageElement, ({
-          result
-        }) => {
-          return {
-            element: result,
-            props
-          };
-        }).pop();
+        const wrappedPage = apiRunner(
+          `wrapPageElement`,
+          {
+            element: pageElement,
+            props,
+          },
+          pageElement,
+          ({ result }) => {
+            return {
+              element: result,
+              props,
+            };
+          },
+        ).pop();
         return wrappedPage;
       }
-
     }
 
-    const routerElement = /*#__PURE__*/React.createElement(ServerLocation, {
-      url: `${__BASE_PATH__}${pagePath}`
-    }, /*#__PURE__*/React.createElement(Router, {
-      id: "gatsby-focus-wrapper",
-      baseuri: __BASE_PATH__
-    }, /*#__PURE__*/React.createElement(RouteHandler, {
-      path: "/*"
-    })), /*#__PURE__*/React.createElement("div", RouteAnnouncerProps));
-    const bodyComponent = /*#__PURE__*/React.createElement(StaticQueryContext.Provider, {
-      value: staticQueryContext
-    }, apiRunner(`wrapRootElement`, {
-      element: routerElement,
-      pathname: pagePath
-    }, routerElement, ({
-      result
-    }) => {
-      return {
-        element: result,
-        pathname: pagePath
-      };
-    }).pop()); // Let the site or plugin render the page component.
+    const routerElement = /*#__PURE__*/ React.createElement(
+      ServerLocation,
+      {
+        url: `${__BASE_PATH__}${pagePath}`,
+      },
+      /*#__PURE__*/ React.createElement(
+        Router,
+        {
+          id: 'gatsby-focus-wrapper',
+          baseuri: __BASE_PATH__,
+        },
+        /*#__PURE__*/ React.createElement(RouteHandler, {
+          path: '/*',
+        }),
+      ),
+      /*#__PURE__*/ React.createElement('div', RouteAnnouncerProps),
+    );
+    const bodyComponent = /*#__PURE__*/ React.createElement(
+      StaticQueryContext.Provider,
+      {
+        value: staticQueryContext,
+      },
+      apiRunner(
+        `wrapRootElement`,
+        {
+          element: routerElement,
+          pathname: pagePath,
+        },
+        routerElement,
+        ({ result }) => {
+          return {
+            element: result,
+            pathname: pagePath,
+          };
+        },
+      ).pop(),
+    ); // Let the site or plugin render the page component.
 
     apiRunner(`replaceRenderer`, {
       bodyComponent,
@@ -286,7 +288,7 @@ var _default = ({
       setPostBodyComponents,
       setBodyProps,
       pathname: pagePath,
-      pathPrefix: __PATH_PREFIX__
+      pathPrefix: __PATH_PREFIX__,
     }); // If no one stepped up, we'll handle it.
 
     if (!bodyHtml) {
@@ -310,108 +312,133 @@ var _default = ({
       bodyHtml,
       scripts,
       styles,
-      pathPrefix: __PATH_PREFIX__
+      pathPrefix: __PATH_PREFIX__,
     });
     reversedScripts.forEach(script => {
       // Add preload/prefetch <link>s for scripts.
-      headComponents.push( /*#__PURE__*/React.createElement("link", {
-        as: "script",
-        rel: script.rel,
-        key: script.name,
-        href: `${__PATH_PREFIX__}/${script.name}`
-      }));
+      headComponents.push(
+        /*#__PURE__*/ React.createElement('link', {
+          as: 'script',
+          rel: script.rel,
+          key: script.name,
+          href: `${__PATH_PREFIX__}/${script.name}`,
+        }),
+      );
     });
 
     if (pageData) {
-      headComponents.push( /*#__PURE__*/React.createElement("link", {
-        as: "fetch",
-        rel: "preload",
-        key: pageDataUrl,
-        href: pageDataUrl,
-        crossOrigin: "anonymous"
-      }));
+      headComponents.push(
+        /*#__PURE__*/ React.createElement('link', {
+          as: 'fetch',
+          rel: 'preload',
+          key: pageDataUrl,
+          href: pageDataUrl,
+          crossOrigin: 'anonymous',
+        }),
+      );
     }
 
-    staticQueryUrls.forEach(staticQueryUrl => headComponents.push( /*#__PURE__*/React.createElement("link", {
-      as: "fetch",
-      rel: "preload",
-      key: staticQueryUrl,
-      href: staticQueryUrl,
-      crossOrigin: "anonymous"
-    })));
+    staticQueryUrls.forEach(staticQueryUrl =>
+      headComponents.push(
+        /*#__PURE__*/ React.createElement('link', {
+          as: 'fetch',
+          rel: 'preload',
+          key: staticQueryUrl,
+          href: staticQueryUrl,
+          crossOrigin: 'anonymous',
+        }),
+      ),
+    );
     const appDataUrl = getAppDataUrl();
 
     if (appDataUrl) {
-      headComponents.push( /*#__PURE__*/React.createElement("link", {
-        as: "fetch",
-        rel: "preload",
-        key: appDataUrl,
-        href: appDataUrl,
-        crossOrigin: "anonymous"
-      }));
+      headComponents.push(
+        /*#__PURE__*/ React.createElement('link', {
+          as: 'fetch',
+          rel: 'preload',
+          key: appDataUrl,
+          href: appDataUrl,
+          crossOrigin: 'anonymous',
+        }),
+      );
     }
 
     reversedStyles.forEach(style => {
       // Add <link>s for styles that should be prefetched
       // otherwise, inline as a <style> tag
       if (style.rel === `prefetch`) {
-        headComponents.push( /*#__PURE__*/React.createElement("link", {
-          as: "style",
-          rel: style.rel,
-          key: style.name,
-          href: `${__PATH_PREFIX__}/${style.name}`
-        }));
+        headComponents.push(
+          /*#__PURE__*/ React.createElement('link', {
+            as: 'style',
+            rel: style.rel,
+            key: style.name,
+            href: `${__PATH_PREFIX__}/${style.name}`,
+          }),
+        );
       } else {
-        headComponents.unshift( /*#__PURE__*/React.createElement("style", {
-          "data-href": `${__PATH_PREFIX__}/${style.name}`,
-          id: `gatsby-global-css`,
-          dangerouslySetInnerHTML: {
-            __html: style.content
-          }
-        }));
+        headComponents.unshift(
+          /*#__PURE__*/ React.createElement('style', {
+            'data-href': `${__PATH_PREFIX__}/${style.name}`,
+            id: `gatsby-global-css`,
+            dangerouslySetInnerHTML: {
+              __html: style.content,
+            },
+          }),
+        );
       }
     }); // Add page metadata for the current page
 
     const windowPageData = `/*<![CDATA[*/window.pagePath="${pagePath}";/*]]>*/`;
-    postBodyComponents.push( /*#__PURE__*/React.createElement("script", {
-      key: `script-loader`,
-      id: `gatsby-script-loader`,
-      dangerouslySetInnerHTML: {
-        __html: windowPageData
-      }
-    })); // Add chunk mapping metadata
+    postBodyComponents.push(
+      /*#__PURE__*/ React.createElement('script', {
+        key: `script-loader`,
+        id: `gatsby-script-loader`,
+        dangerouslySetInnerHTML: {
+          __html: windowPageData,
+        },
+      }),
+    ); // Add chunk mapping metadata
 
-    const scriptChunkMapping = `/*<![CDATA[*/window.___chunkMapping=${JSON.stringify(chunkMapping)};/*]]>*/`;
-    postBodyComponents.push( /*#__PURE__*/React.createElement("script", {
-      key: `chunk-mapping`,
-      id: `gatsby-chunk-mapping`,
-      dangerouslySetInnerHTML: {
-        __html: scriptChunkMapping
-      }
-    }));
+    const scriptChunkMapping = `/*<![CDATA[*/window.___chunkMapping=${JSON.stringify(
+      chunkMapping,
+    )};/*]]>*/`;
+    postBodyComponents.push(
+      /*#__PURE__*/ React.createElement('script', {
+        key: `chunk-mapping`,
+        id: `gatsby-chunk-mapping`,
+        dangerouslySetInnerHTML: {
+          __html: scriptChunkMapping,
+        },
+      }),
+    );
     let bodyScripts = [];
 
     if (chunkMapping[`polyfill`]) {
       chunkMapping[`polyfill`].forEach(script => {
         const scriptPath = `${__PATH_PREFIX__}${script}`;
-        bodyScripts.push( /*#__PURE__*/React.createElement("script", {
-          key: scriptPath,
-          src: scriptPath,
-          noModule: true
-        }));
+        bodyScripts.push(
+          /*#__PURE__*/ React.createElement('script', {
+            key: scriptPath,
+            src: scriptPath,
+            noModule: true,
+          }),
+        );
       });
     } // Filter out prefetched bundles as adding them as a script tag
     // would force high priority fetching.
 
-
-    bodyScripts = bodyScripts.concat(scripts.filter(s => s.rel !== `prefetch`).map(s => {
-      const scriptPath = `${__PATH_PREFIX__}/${JSON.stringify(s.name).slice(1, -1)}`;
-      return /*#__PURE__*/React.createElement("script", {
-        key: scriptPath,
-        src: scriptPath,
-        async: true
-      });
-    }));
+    bodyScripts = bodyScripts.concat(
+      scripts
+        .filter(s => s.rel !== `prefetch`)
+        .map(s => {
+          const scriptPath = `${__PATH_PREFIX__}/${JSON.stringify(s.name).slice(1, -1)}`;
+          return /*#__PURE__*/ React.createElement('script', {
+            key: scriptPath,
+            src: scriptPath,
+            async: true,
+          });
+        }),
+    );
     postBodyComponents.push(...bodyScripts);
     apiRunner(`onPreRenderHTML`, {
       getHeadComponents,
@@ -421,20 +448,25 @@ var _default = ({
       getPostBodyComponents,
       replacePostBodyComponents,
       pathname: pagePath,
-      pathPrefix: __PATH_PREFIX__
+      pathPrefix: __PATH_PREFIX__,
     });
-    const html = `<!DOCTYPE html>${renderToStaticMarkup( /*#__PURE__*/React.createElement(Html, (0, _extends2.default)({}, bodyProps, {
-      headComponents: headComponents,
-      htmlAttributes: htmlAttributes,
-      bodyAttributes: bodyAttributes,
-      preBodyComponents: preBodyComponents,
-      postBodyComponents: postBodyComponents,
-      body: bodyHtml,
-      path: pagePath
-    })))}`;
+    const html = `<!DOCTYPE html>${renderToStaticMarkup(
+      /*#__PURE__*/ React.createElement(
+        Html,
+        (0, _extends2.default)({}, bodyProps, {
+          headComponents: headComponents,
+          htmlAttributes: htmlAttributes,
+          bodyAttributes: bodyAttributes,
+          preBodyComponents: preBodyComponents,
+          postBodyComponents: postBodyComponents,
+          body: bodyHtml,
+          path: pagePath,
+        }),
+      ),
+    )}`;
     return {
       html,
-      unsafeBuiltinsUsage: global.unsafeBuiltinUsage
+      unsafeBuiltinsUsage: global.unsafeBuiltinUsage,
     };
   } catch (e) {
     e.unsafeBuiltinsUsage = global.unsafeBuiltinUsage;

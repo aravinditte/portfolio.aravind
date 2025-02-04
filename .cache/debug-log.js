@@ -6,8 +6,8 @@ const styles = [
   `color: white`,
   `font-weight: bold`,
   `padding: 2px 0.5em`,
-].join(`;`)
+].join(`;`);
 
 export function debugLog(...args) {
-  console.debug(`%cgatsby`, styles, ...args)
+  console.debug(`%cgatsby`, styles, ...args);
 }

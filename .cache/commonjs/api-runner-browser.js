@@ -1,12 +1,8 @@
-"use strict";
+'use strict';
 
 const plugins = require(`./api-runner-browser-plugins`);
 
-const {
-  getResourceURLsForPathname,
-  loadPage,
-  loadPageSync
-} = require(`./loader`).publicLoader;
+const { getResourceURLsForPathname, loadPage, loadPageSync } = require(`./loader`).publicLoader;
 
 exports.apiRunner = (api, args = {}, defaultReturn, argTransform) => {
   // Hooks for gatsby-cypress's API handler
@@ -34,7 +30,7 @@ exports.apiRunner = (api, args = {}, defaultReturn, argTransform) => {
       args = argTransform({
         args,
         result,
-        plugin
+        plugin,
       });
     }
 
@@ -52,4 +48,9 @@ exports.apiRunner = (api, args = {}, defaultReturn, argTransform) => {
   }
 };
 
-exports.apiRunnerAsync = (api, args, defaultReturn) => plugins.reduce((previous, next) => next.plugin[api] ? previous.then(() => next.plugin[api](args, next.options)) : previous, Promise.resolve());
+exports.apiRunnerAsync = (api, args, defaultReturn) =>
+  plugins.reduce(
+    (previous, next) =>
+      next.plugin[api] ? previous.then(() => next.plugin[api](args, next.options)) : previous,
+    Promise.resolve(),
+  );

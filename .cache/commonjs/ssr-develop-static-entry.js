@@ -1,29 +1,29 @@
-"use strict";
+'use strict';
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
 
 exports.__esModule = true;
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireDefault(require('react'));
 
-var _fs = _interopRequireDefault(require("fs"));
+var _fs = _interopRequireDefault(require('fs'));
 
-var _server = require("react-dom/server");
+var _server = require('react-dom/server');
 
-var _lodash = require("lodash");
+var _lodash = require('lodash');
 
-var _path = _interopRequireDefault(require("path"));
+var _path = _interopRequireDefault(require('path'));
 
-var _apiRunnerSsr = _interopRequireDefault(require("./api-runner-ssr"));
+var _apiRunnerSsr = _interopRequireDefault(require('./api-runner-ssr'));
 
-var _findPath = require("./find-path");
+var _findPath = require('./find-path');
 
-var _ssrSyncRequires = _interopRequireDefault(require("$virtual/ssr-sync-requires"));
+var _ssrSyncRequires = _interopRequireDefault(require('$virtual/ssr-sync-requires'));
 
-var _routeAnnouncerProps = require("./route-announcer-props");
+var _routeAnnouncerProps = require('./route-announcer-props');
 
-var _router = require("@reach/router");
+var _router = require('@reach/router');
 
 // import testRequireError from "./test-require-error"
 // For some extremely mysterious reason, webpack adds the above module *after*
@@ -41,7 +41,9 @@ const getStats = publicDir => {
   if (cachedStats) {
     return cachedStats;
   } else {
-    cachedStats = JSON.parse(_fs.default.readFileSync(_path.default.join(publicDir, `webpack.stats.json`), `utf-8`));
+    cachedStats = JSON.parse(
+      _fs.default.readFileSync(_path.default.join(publicDir, `webpack.stats.json`), `utf-8`),
+    );
     return cachedStats;
   }
 };
@@ -63,11 +65,13 @@ Html = Html && Html.__esModule ? Html.default : Html;
 
 var _default = (pagePath, isClientOnlyPage, publicDir, callback) => {
   let bodyHtml = ``;
-  let headComponents = [/*#__PURE__*/_react.default.createElement("meta", {
-    key: "environment",
-    name: "note",
-    content: "environment=development"
-  })];
+  let headComponents = [
+    /*#__PURE__*/ _react.default.createElement('meta', {
+      key: 'environment',
+      name: 'note',
+      content: 'environment=development',
+    }),
+  ];
   let htmlAttributes = {};
   let bodyAttributes = {};
   let preBodyComponents = [];
@@ -141,119 +145,154 @@ var _default = (pagePath, isClientOnlyPage, publicDir, callback) => {
     };
 
     const pageData = getPageData(pagePath);
-    const {
-      componentChunkName,
-      staticQueryHashes = []
-    } = pageData;
-    let scriptsAndStyles = (0, _lodash.flatten)([`commons`].map(chunkKey => {
-      const fetchKey = `assetsByChunkName[${chunkKey}]`;
-      const stats = getStats(publicDir);
-      let chunks = (0, _lodash.get)(stats, fetchKey);
-      const namedChunkGroups = (0, _lodash.get)(stats, `namedChunkGroups`);
+    const { componentChunkName, staticQueryHashes = [] } = pageData;
+    let scriptsAndStyles = (0, _lodash.flatten)(
+      [`commons`].map(chunkKey => {
+        const fetchKey = `assetsByChunkName[${chunkKey}]`;
+        const stats = getStats(publicDir);
+        let chunks = (0, _lodash.get)(stats, fetchKey);
+        const namedChunkGroups = (0, _lodash.get)(stats, `namedChunkGroups`);
 
-      if (!chunks) {
-        return null;
-      }
-
-      chunks = chunks.map(chunk => {
-        if (chunk === `/`) {
+        if (!chunks) {
           return null;
         }
 
-        return {
-          rel: `preload`,
-          name: chunk
-        };
-      });
-      namedChunkGroups[chunkKey].assets.forEach(asset => chunks.push({
-        rel: `preload`,
-        name: asset.name
-      }));
-      const childAssets = namedChunkGroups[chunkKey].childAssets;
+        chunks = chunks.map(chunk => {
+          if (chunk === `/`) {
+            return null;
+          }
 
-      for (const rel in childAssets) {
-        if (childAssets.hasownProperty(rel)) {
-          chunks = (0, _lodash.concat)(chunks, childAssets[rel].map(chunk => {
-            return {
-              rel,
-              name: chunk
-            };
-          }));
+          return {
+            rel: `preload`,
+            name: chunk,
+          };
+        });
+        namedChunkGroups[chunkKey].assets.forEach(asset =>
+          chunks.push({
+            rel: `preload`,
+            name: asset.name,
+          }),
+        );
+        const childAssets = namedChunkGroups[chunkKey].childAssets;
+
+        for (const rel in childAssets) {
+          if (childAssets.hasownProperty(rel)) {
+            chunks = (0, _lodash.concat)(
+              chunks,
+              childAssets[rel].map(chunk => {
+                return {
+                  rel,
+                  name: chunk,
+                };
+              }),
+            );
+          }
         }
-      }
 
-      return chunks;
-    })).filter(s => (0, _lodash.isObject)(s)).sort((s1, s2) => s1.rel == `preload` ? -1 : 1); // given priority to preload
+        return chunks;
+      }),
+    )
+      .filter(s => (0, _lodash.isObject)(s))
+      .sort((s1, s2) => (s1.rel == `preload` ? -1 : 1)); // given priority to preload
 
     scriptsAndStyles = (0, _lodash.uniqBy)(scriptsAndStyles, item => item.name);
     const styles = scriptsAndStyles.filter(style => style.name && style.name.endsWith(`.css`));
-    styles.slice(0).reverse().forEach(style => {
-      headComponents.unshift( /*#__PURE__*/_react.default.createElement("link", {
-        "data-identity": `gatsby-dev-css`,
-        key: style.name,
-        rel: "stylesheet",
-        type: "text/css",
-        href: `${__PATH_PREFIX__}/${style.name}`
-      }));
-    });
+    styles
+      .slice(0)
+      .reverse()
+      .forEach(style => {
+        headComponents.unshift(
+          /*#__PURE__*/ _react.default.createElement('link', {
+            'data-identity': `gatsby-dev-css`,
+            key: style.name,
+            rel: 'stylesheet',
+            type: 'text/css',
+            href: `${__PATH_PREFIX__}/${style.name}`,
+          }),
+        );
+      });
     const createElement = _react.default.createElement;
 
     class RouteHandler extends _react.default.Component {
       render() {
         var _pageData$result, _pageData$result$page;
 
-        const props = { ...this.props,
+        const props = {
+          ...this.props,
           ...pageData.result,
-          params: { ...(0, _findPath.grabMatchParams)(this.props.location.pathname),
-            ...(((_pageData$result = pageData.result) === null || _pageData$result === void 0 ? void 0 : (_pageData$result$page = _pageData$result.pageContext) === null || _pageData$result$page === void 0 ? void 0 : _pageData$result$page.__params) || {})
-          }
+          params: {
+            ...(0, _findPath.grabMatchParams)(this.props.location.pathname),
+            ...(((_pageData$result = pageData.result) === null || _pageData$result === void 0
+              ? void 0
+              : (_pageData$result$page = _pageData$result.pageContext) === null ||
+                _pageData$result$page === void 0
+              ? void 0
+              : _pageData$result$page.__params) || {}),
+          },
         };
         let pageElement;
 
         if (_ssrSyncRequires.default.ssrComponents[componentChunkName] && !isClientOnlyPage) {
-          pageElement = createElement(_ssrSyncRequires.default.ssrComponents[componentChunkName], props);
+          pageElement = createElement(
+            _ssrSyncRequires.default.ssrComponents[componentChunkName],
+            props,
+          );
         } else {
           // If this is a client-only page or the pageComponent didn't finish
           // compiling yet, just render an empty component.
           pageElement = () => null;
         }
 
-        const wrappedPage = (0, _apiRunnerSsr.default)(`wrapPageElement`, {
-          element: pageElement,
-          props
-        }, pageElement, ({
-          result
-        }) => {
-          return {
-            element: result,
-            props
-          };
-        }).pop();
+        const wrappedPage = (0, _apiRunnerSsr.default)(
+          `wrapPageElement`,
+          {
+            element: pageElement,
+            props,
+          },
+          pageElement,
+          ({ result }) => {
+            return {
+              element: result,
+              props,
+            };
+          },
+        ).pop();
         return wrappedPage;
       }
-
     }
 
-    const routerElement = /*#__PURE__*/_react.default.createElement(_router.ServerLocation, {
-      url: `${__BASE_PATH__}${pagePath}`
-    }, /*#__PURE__*/_react.default.createElement(_router.Router, {
-      id: "gatsby-focus-wrapper",
-      baseuri: __BASE_PATH__
-    }, /*#__PURE__*/_react.default.createElement(RouteHandler, {
-      path: "/*"
-    })), /*#__PURE__*/_react.default.createElement("div", _routeAnnouncerProps.RouteAnnouncerProps));
+    const routerElement = /*#__PURE__*/ _react.default.createElement(
+      _router.ServerLocation,
+      {
+        url: `${__BASE_PATH__}${pagePath}`,
+      },
+      /*#__PURE__*/ _react.default.createElement(
+        _router.Router,
+        {
+          id: 'gatsby-focus-wrapper',
+          baseuri: __BASE_PATH__,
+        },
+        /*#__PURE__*/ _react.default.createElement(RouteHandler, {
+          path: '/*',
+        }),
+      ),
+      /*#__PURE__*/ _react.default.createElement('div', _routeAnnouncerProps.RouteAnnouncerProps),
+    );
 
-    const bodyComponent = (0, _apiRunnerSsr.default)(`wrapRootElement`, {
-      element: routerElement,
-      pathname: pagePath
-    }, routerElement, ({
-      result
-    }) => {
-      return {
-        element: result,
-        pathname: pagePath
-      };
-    }).pop(); // Let the site or plugin render the page component.
+    const bodyComponent = (0, _apiRunnerSsr.default)(
+      `wrapRootElement`,
+      {
+        element: routerElement,
+        pathname: pagePath,
+      },
+      routerElement,
+      ({ result }) => {
+        return {
+          element: result,
+          pathname: pagePath,
+        };
+      },
+    ).pop(); // Let the site or plugin render the page component.
 
     (0, _apiRunnerSsr.default)(`replaceRenderer`, {
       bodyComponent,
@@ -265,7 +304,7 @@ var _default = (pagePath, isClientOnlyPage, publicDir, callback) => {
       setPostBodyComponents,
       setBodyProps,
       pathname: pagePath,
-      pathPrefix: __PATH_PREFIX__
+      pathPrefix: __PATH_PREFIX__,
     }); // If no one stepped up, we'll handle it.
 
     if (!bodyHtml) {
@@ -284,7 +323,7 @@ var _default = (pagePath, isClientOnlyPage, publicDir, callback) => {
       setPreBodyComponents,
       setPostBodyComponents,
       setBodyProps,
-      pathname: pagePath
+      pathname: pagePath,
     });
     (0, _apiRunnerSsr.default)(`onPreRenderHTML`, {
       getHeadComponents,
@@ -293,33 +332,40 @@ var _default = (pagePath, isClientOnlyPage, publicDir, callback) => {
       replacePreBodyComponents,
       getPostBodyComponents,
       replacePostBodyComponents,
-      pathname: pagePath
+      pathname: pagePath,
     });
     return bodyHtml;
   };
 
   const bodyStr = generateBodyHTML();
 
-  const htmlElement = /*#__PURE__*/_react.default.createElement(Html, { ...bodyProps,
+  const htmlElement = /*#__PURE__*/ _react.default.createElement(Html, {
+    ...bodyProps,
     body: bodyStr,
-    headComponents: headComponents.concat([/*#__PURE__*/_react.default.createElement("script", {
-      key: `io`,
-      src: "/socket.io/socket.io.js"
-    })]),
+    headComponents: headComponents.concat([
+      /*#__PURE__*/ _react.default.createElement('script', {
+        key: `io`,
+        src: '/socket.io/socket.io.js',
+      }),
+    ]),
     htmlAttributes,
     bodyAttributes,
     preBodyComponents,
-    postBodyComponents: postBodyComponents.concat([/*#__PURE__*/_react.default.createElement("script", {
-      key: `polyfill`,
-      src: "/polyfill.js",
-      noModule: true
-    }), /*#__PURE__*/_react.default.createElement("script", {
-      key: `framework`,
-      src: "/framework.js"
-    }), /*#__PURE__*/_react.default.createElement("script", {
-      key: `commons`,
-      src: "/commons.js"
-    })])
+    postBodyComponents: postBodyComponents.concat([
+      /*#__PURE__*/ _react.default.createElement('script', {
+        key: `polyfill`,
+        src: '/polyfill.js',
+        noModule: true,
+      }),
+      /*#__PURE__*/ _react.default.createElement('script', {
+        key: `framework`,
+        src: '/framework.js',
+      }),
+      /*#__PURE__*/ _react.default.createElement('script', {
+        key: `commons`,
+        src: '/commons.js',
+      }),
+    ]),
   });
 
   let htmlStr = (0, _server.renderToStaticMarkup)(htmlElement);

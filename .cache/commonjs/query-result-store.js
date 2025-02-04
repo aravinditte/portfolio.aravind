@@ -1,31 +1,41 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+var _interopRequireWildcard = require('@babel/runtime/helpers/interopRequireWildcard');
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
 
 exports.__esModule = true;
 exports.StaticQueryStore = exports.PageQueryStore = void 0;
 
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+var _extends2 = _interopRequireDefault(require('@babel/runtime/helpers/extends'));
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireDefault(require('react'));
 
-var _gatsby = require("gatsby");
+var _gatsby = require('gatsby');
 
-var _socketIo = require("./socketIo");
+var _socketIo = require('./socketIo');
 
-var _pageRenderer = _interopRequireDefault(require("./page-renderer"));
+var _pageRenderer = _interopRequireDefault(require('./page-renderer'));
 
-var _normalizePagePath = _interopRequireDefault(require("./normalize-page-path"));
+var _normalizePagePath = _interopRequireDefault(require('./normalize-page-path'));
 
-var _loader = _interopRequireWildcard(require("./loader"));
+var _loader = _interopRequireWildcard(require('./loader'));
 
 if (process.env.NODE_ENV === `production`) {
-  throw new Error(`It appears like Gatsby is misconfigured. JSONStore is Gatsby internal ` + `development-only component and should never be used in production.\n\n` + `Unless your site has a complex or custom webpack/Gatsby ` + `configuration this is likely a bug in Gatsby. ` + `Please report this at https://github.com/gatsbyjs/gatsby/issues ` + `with steps to reproduce this error.`);
+  throw new Error(
+    `It appears like Gatsby is misconfigured. JSONStore is Gatsby internal ` +
+      `development-only component and should never be used in production.\n\n` +
+      `Unless your site has a complex or custom webpack/Gatsby ` +
+      `configuration this is likely a bug in Gatsby. ` +
+      `Please report this at https://github.com/gatsbyjs/gatsby/issues ` +
+      `with steps to reproduce this error.`,
+  );
 }
 
-const getPathFromProps = props => props.pageResources && props.pageResources.page ? (0, _normalizePagePath.default)(props.pageResources.page.path) : undefined;
+const getPathFromProps = props =>
+  props.pageResources && props.pageResources.page
+    ? (0, _normalizePagePath.default)(props.pageResources.page.path)
+    : undefined;
 
 class PageQueryStore extends _react.default.Component {
   constructor(props) {
@@ -34,14 +44,16 @@ class PageQueryStore extends _react.default.Component {
     this.handleMittEvent = () => {
       this.setState(state => {
         return {
-          page: state.path ? _loader.default.loadPageSync((0, _normalizePagePath.default)(state.path)) : null
+          page: state.path
+            ? _loader.default.loadPageSync((0, _normalizePagePath.default)(state.path))
+            : null,
         };
       });
     };
 
     this.state = {
       pageData: null,
-      path: null
+      path: null,
     };
   }
 
@@ -69,7 +81,9 @@ class PageQueryStore extends _react.default.Component {
       (0, _socketIo.registerPath)(newPath);
       return {
         path: newPath,
-        page: newPath ? _loader.default.loadPageSync((0, _normalizePagePath.default)(newPath)) : null
+        page: newPath
+          ? _loader.default.loadPageSync((0, _normalizePagePath.default)(newPath))
+          : null,
       };
     }
 
@@ -80,18 +94,24 @@ class PageQueryStore extends _react.default.Component {
     // We want to update this component when:
     // - location changed
     // - page data for path changed
-    return this.props.location !== nextProps.location || this.state.path !== nextState.path || this.state.page !== nextState.page;
+    return (
+      this.props.location !== nextProps.location ||
+      this.state.path !== nextState.path ||
+      this.state.page !== nextState.page
+    );
   }
 
   render() {
     // eslint-disable-next-line
     if (!this.state.page) {
-      return /*#__PURE__*/_react.default.createElement("div", null);
+      return /*#__PURE__*/ _react.default.createElement('div', null);
     }
 
-    return /*#__PURE__*/_react.default.createElement(_pageRenderer.default, (0, _extends2.default)({}, this.props, this.state.page.json));
+    return /*#__PURE__*/ _react.default.createElement(
+      _pageRenderer.default,
+      (0, _extends2.default)({}, this.props, this.state.page.json),
+    );
   }
-
 }
 
 exports.PageQueryStore = PageQueryStore;
@@ -102,14 +122,12 @@ class StaticQueryStore extends _react.default.Component {
 
     this.handleMittEvent = () => {
       this.setState({
-        staticQueryData: { ...(0, _loader.getStaticQueryResults)()
-        }
+        staticQueryData: { ...(0, _loader.getStaticQueryResults)() },
       });
     };
 
     this.state = {
-      staticQueryData: { ...(0, _loader.getStaticQueryResults)()
-      }
+      staticQueryData: { ...(0, _loader.getStaticQueryResults)() },
     };
   }
 
@@ -132,11 +150,14 @@ class StaticQueryStore extends _react.default.Component {
   }
 
   render() {
-    return /*#__PURE__*/_react.default.createElement(_gatsby.StaticQueryContext.Provider, {
-      value: this.state.staticQueryData
-    }, this.props.children);
+    return /*#__PURE__*/ _react.default.createElement(
+      _gatsby.StaticQueryContext.Provider,
+      {
+        value: this.state.staticQueryData,
+      },
+      this.props.children,
+    );
   }
-
 }
 
 exports.StaticQueryStore = StaticQueryStore;

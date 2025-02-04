@@ -1,17 +1,18 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+var _interopRequireWildcard = require('@babel/runtime/helpers/interopRequireWildcard');
 
 exports.__esModule = true;
 exports.Style = void 0;
 
-var React = _interopRequireWildcard(require("react"));
+var React = _interopRequireWildcard(require('react'));
 
-var _cssToObject = require("../css-to-object");
+var _cssToObject = require('../css-to-object');
 
-const Style = () => /*#__PURE__*/React.createElement("style", {
-  dangerouslySetInnerHTML: {
-    __html: (0, _cssToObject.css)`
+const Style = () =>
+  /*#__PURE__*/ React.createElement('style', {
+    dangerouslySetInnerHTML: {
+      __html: (0, _cssToObject.css)`
         :host {
           --color-ansi-selection: rgba(95, 126, 151, 0.48);
           --color-ansi-bg: #fafafa;
@@ -414,8 +415,8 @@ const Style = () => /*#__PURE__*/React.createElement("style", {
             --ring-color: rgba(177, 122, 204, var(--ring-opacity));
           }
         }
-      `
-  }
-});
+      `,
+    },
+  });
 
 exports.Style = Style;

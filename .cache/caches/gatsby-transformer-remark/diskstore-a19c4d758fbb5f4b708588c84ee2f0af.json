@@ -1,1 +1,12 @@
-{"expireTime":9007200993414133000,"key":"transformer-remark-markdown-ast-083822c009ec005401b96f2417511d4a-gatsby-remark-external-linksgatsby-remark-imagesgatsby-remark-code-titlesgatsby-remark-prismjs-","val":{"type":"root","children":[],"position":{"start":{"line":1,"column":1,"offset":0},"end":{"line":1,"column":1,"offset":0}}}}
+{
+  "expireTime": 9007200993414133000,
+  "key": "transformer-remark-markdown-ast-083822c009ec005401b96f2417511d4a-gatsby-remark-external-linksgatsby-remark-imagesgatsby-remark-code-titlesgatsby-remark-prismjs-",
+  "val": {
+    "type": "root",
+    "children": [],
+    "position": {
+      "start": { "line": 1, "column": 1, "offset": 0 },
+      "end": { "line": 1, "column": 1, "offset": 0 }
+    }
+  }
+}

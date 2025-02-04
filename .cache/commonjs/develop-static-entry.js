@@ -1,17 +1,17 @@
-"use strict";
+'use strict';
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
 
 exports.__esModule = true;
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireDefault(require('react'));
 
-var _server = require("react-dom/server");
+var _server = require('react-dom/server');
 
-var _lodash = require("lodash");
+var _lodash = require('lodash');
 
-var _apiRunnerSsr = _interopRequireDefault(require("./api-runner-ssr"));
+var _apiRunnerSsr = _interopRequireDefault(require('./api-runner-ssr'));
 
 // import testRequireError from "./test-require-error"
 // For some extremely mysterious reason, webpack adds the above module *after*
@@ -38,14 +38,14 @@ try {
 
 Html = Html && Html.__esModule ? Html.default : Html;
 
-var _default = ({
-  pagePath
-}) => {
-  let headComponents = [/*#__PURE__*/_react.default.createElement("meta", {
-    key: "environment",
-    name: "note",
-    content: "environment=development"
-  })];
+var _default = ({ pagePath }) => {
+  let headComponents = [
+    /*#__PURE__*/ _react.default.createElement('meta', {
+      key: 'environment',
+      name: 'note',
+      content: 'environment=development',
+    }),
+  ];
   let htmlAttributes = {};
   let bodyAttributes = {};
   let preBodyComponents = [];
@@ -102,7 +102,7 @@ var _default = ({
     setPreBodyComponents,
     setPostBodyComponents,
     setBodyProps,
-    pathname: pagePath
+    pathname: pagePath,
   });
   (0, _apiRunnerSsr.default)(`onPreRenderHTML`, {
     getHeadComponents,
@@ -111,33 +111,41 @@ var _default = ({
     replacePreBodyComponents,
     getPostBodyComponents,
     replacePostBodyComponents,
-    pathname: pagePath
+    pathname: pagePath,
   });
 
-  const htmlElement = /*#__PURE__*/_react.default.createElement(Html, { ...bodyProps,
+  const htmlElement = /*#__PURE__*/ _react.default.createElement(Html, {
+    ...bodyProps,
     body: ``,
-    headComponents: headComponents.concat([/*#__PURE__*/_react.default.createElement("script", {
-      key: `io`,
-      src: "/socket.io/socket.io.js"
-    }), /*#__PURE__*/_react.default.createElement("link", {
-      key: "styles",
-      rel: "stylesheet",
-      href: "/commons.css"
-    })]),
+    headComponents: headComponents.concat([
+      /*#__PURE__*/ _react.default.createElement('script', {
+        key: `io`,
+        src: '/socket.io/socket.io.js',
+      }),
+      /*#__PURE__*/ _react.default.createElement('link', {
+        key: 'styles',
+        rel: 'stylesheet',
+        href: '/commons.css',
+      }),
+    ]),
     htmlAttributes,
     bodyAttributes,
     preBodyComponents,
-    postBodyComponents: postBodyComponents.concat([/*#__PURE__*/_react.default.createElement("script", {
-      key: `polyfill`,
-      src: "/polyfill.js",
-      noModule: true
-    }), /*#__PURE__*/_react.default.createElement("script", {
-      key: `framework`,
-      src: "/framework.js"
-    }), /*#__PURE__*/_react.default.createElement("script", {
-      key: `commons`,
-      src: "/commons.js"
-    })])
+    postBodyComponents: postBodyComponents.concat([
+      /*#__PURE__*/ _react.default.createElement('script', {
+        key: `polyfill`,
+        src: '/polyfill.js',
+        noModule: true,
+      }),
+      /*#__PURE__*/ _react.default.createElement('script', {
+        key: `framework`,
+        src: '/framework.js',
+      }),
+      /*#__PURE__*/ _react.default.createElement('script', {
+        key: `commons`,
+        src: '/commons.js',
+      }),
+    ]),
   });
 
   htmlStr = (0, _server.renderToStaticMarkup)(htmlElement);

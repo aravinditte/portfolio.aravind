@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from 'react';
 
 export function CodeFrame({ decoded }) {
   if (!decoded) {
@@ -6,7 +6,7 @@ export function CodeFrame({ decoded }) {
       <pre data-gatsby-overlay="pre">
         <code data-gatsby-overlay="pre__code" />
       </pre>
-    )
+    );
   }
 
   return (
@@ -20,19 +20,15 @@ export function CodeFrame({ decoded }) {
               : entry.decoration === `italic`
               ? { fontStyle: `italic` }
               : undefined),
-          }
+          };
 
           return (
-            <span
-              key={`frame-${index}`}
-              data-gatsby-overlay="pre__code__span"
-              style={style}
-            >
+            <span key={`frame-${index}`} data-gatsby-overlay="pre__code__span" style={style}>
               {entry.content}
             </span>
-          )
+          );
         })}
       </code>
     </pre>
-  )
+  );
 }

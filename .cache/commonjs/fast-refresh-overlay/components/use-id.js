@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+var _interopRequireWildcard = require('@babel/runtime/helpers/interopRequireWildcard');
 
 exports.__esModule = true;
 exports.useId = useId;
 
-var React = _interopRequireWildcard(require("react"));
+var React = _interopRequireWildcard(require('react'));
 
 // Copied from https://github.com/carbon-design-system/carbon
 // License: Apache-2.0

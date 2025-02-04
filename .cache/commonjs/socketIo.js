@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
 
 exports.__esModule = true;
 exports.default = socketIo;
 exports.registerPath = registerPath;
 exports.unregisterPath = unregisterPath;
 
-var _socket = _interopRequireDefault(require("socket.io-client"));
+var _socket = _interopRequireDefault(require('socket.io-client'));
 
-var _errorOverlayHandler = require("./error-overlay-handler");
+var _errorOverlayHandler = require('./error-overlay-handler');
 
 let socket = null;
 
@@ -20,7 +20,7 @@ function socketIo() {
       try {
         // force websocket as transport
         socket = (0, _socket.default)({
-          transports: [process.env.GATSBY_SOCKET_IO_DEFAULT_TRANSPORT]
+          transports: [process.env.GATSBY_SOCKET_IO_DEFAULT_TRANSPORT],
         }); // when websocket fails, we'll try polling
 
         socket.on(`reconnect_attempt`, () => {
@@ -55,11 +55,9 @@ function socketIo() {
 // This will help the backend prioritize queries for this
 // path.
 
-
 function registerPath(path) {
   socket.emit(`registerPath`, path);
 } // Unregister the former path
-
 
 function unregisterPath(path) {
   socket.emit(`unregisterPath`, path);
