@@ -1,5 +1,5 @@
-import React from 'react';
-import { css } from '../css-to-object';
+import React from "react"
+import { css } from "../css-to-object"
 
 export const Style = () => (
   <style
@@ -12,12 +12,14 @@ export const Style = () => (
           --color: #232129;
           --radii: 4px;
           --z-index-indicator: 10000;
-          --shadow: 0px 2px 4px rgba(46, 41, 51, 0.08), 0px 4px 8px rgba(71, 63, 79, 0.16);
+          --shadow: 0px 2px 4px rgba(46, 41, 51, 0.08),
+            0px 4px 8px rgba(71, 63, 79, 0.16);
         }
 
-        [data-gatsby-loading-indicator='root'] {
-          font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
-            sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' !important;
+        [data-gatsby-loading-indicator="root"] {
+          font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+            Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+            "Segoe UI Symbol" !important;
           background: var(--background);
           color: var(--color);
           position: fixed;
@@ -35,7 +37,7 @@ export const Style = () => (
           min-width: 196px;
         }
 
-        [data-gatsby-loading-indicator-visible='false'] {
+        [data-gatsby-loading-indicator-visible="false"] {
           opacity: 0;
           visibility: hidden;
           will-change: opacity, transform;
@@ -43,21 +45,21 @@ export const Style = () => (
           transition: all 0.3s ease-in-out;
         }
 
-        [data-gatsby-loading-indicator-visible='true'] {
+        [data-gatsby-loading-indicator-visible="true"] {
           opacity: 1;
           visibility: visible;
           transform: translateY(0px);
           transition: all 0.3s ease-in-out;
         }
 
-        [data-gatsby-loading-indicator='spinner'] {
+        [data-gatsby-loading-indicator="spinner"] {
           animation: spin 1s linear infinite;
           height: 18px;
           width: 18px;
           color: var(--spinnerColor);
         }
 
-        [data-gatsby-loading-indicator='text'] {
+        [data-gatsby-loading-indicator="text"] {
           margin-left: 0.75em;
           line-height: 18px;
         }
@@ -72,14 +74,14 @@ export const Style = () => (
         }
 
         @media (prefers-reduced-motion: reduce) {
-          [data-gatsby-loading-indicator='spinner'] {
+          [data-gatsby-loading-indicator="spinner"] {
             animation: none;
           }
-          [data-gatsby-loading-indicator-visible='false'] {
+          [data-gatsby-loading-indicator-visible="false"] {
             transition: none;
           }
 
-          [data-gatsby-loading-indicator-visible='true'] {
+          [data-gatsby-loading-indicator-visible="true"] {
             transition: none;
           }
         }
@@ -94,4 +96,4 @@ export const Style = () => (
       `,
     }}
   />
-);
+)

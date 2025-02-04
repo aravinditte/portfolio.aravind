@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _interopRequireWildcard = require('@babel/runtime/helpers/interopRequireWildcard');
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
 exports.__esModule = true;
 exports.LoadingIndicatorEventHandler = LoadingIndicatorEventHandler;
 
-var React = _interopRequireWildcard(require('react'));
+var React = _interopRequireWildcard(require("react"));
 
-var _emitter = _interopRequireDefault(require('../emitter'));
+var _emitter = _interopRequireDefault(require("../emitter"));
 
-var _indicator = require('./indicator');
+var _indicator = require("./indicator");
 
 function LoadingIndicatorEventHandler() {
   const [visible, setVisible] = React.useState(false);
@@ -26,7 +26,7 @@ function LoadingIndicatorEventHandler() {
       _emitter.default.off(`onRouteUpdate`, () => setVisible(false));
     };
   }, []);
-  return /*#__PURE__*/ React.createElement(_indicator.Indicator, {
-    visible: visible,
+  return /*#__PURE__*/React.createElement(_indicator.Indicator, {
+    visible: visible
   });
 }

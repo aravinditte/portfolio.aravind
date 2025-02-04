@@ -7,8 +7,8 @@ module.exports = [
     plugin: require('../node_modules/gatsby-plugin-manifest/gatsby-browser.js'),
     options: {
       plugins: [],
-      name: 'Aravind Itte',
-      short_name: 'Aravind Itte',
+      name: 'Brittany Chiang',
+      short_name: 'Brittany Chiang',
       start_url: '/',
       background_color: '#020c1b',
       theme_color: '#0a192f',

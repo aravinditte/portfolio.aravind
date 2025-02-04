@@ -13,6 +13,6 @@ export const RouteAnnouncerProps = {
     whiteSpace: `nowrap`,
     border: 0,
   },
-  'aria-live': `assertive`,
-  'aria-atomic': `true`,
-};
+  "aria-live": `assertive`,
+  "aria-atomic": `true`,
+}

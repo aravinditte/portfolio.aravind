@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 exports.__esModule = true;
 exports.match = match;
@@ -26,7 +26,11 @@ exports.match = match;
  * @param {Key} key
  * @returns {boolean}
  */
-function match(eventOrCode, { key, which, keyCode } = {}) {
+function match(eventOrCode, {
+  key,
+  which,
+  keyCode
+} = {}) {
   if (typeof eventOrCode === `string`) {
     return eventOrCode === key;
   }

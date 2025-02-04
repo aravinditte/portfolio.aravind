@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 exports.__esModule = true;
 exports.reportError = exports.clearError = void 0;
@@ -13,20 +13,14 @@ const handleErrorOverlay = () => {
   }
 
   if (errorsToDisplay.length > 0) {
-    window._gatsbyEvents.push([
-      `FAST_REFRESH`,
-      {
-        action: `SHOW_GRAPHQL_ERRORS`,
-        payload: errorsToDisplay,
-      },
-    ]);
+    window._gatsbyEvents.push([`FAST_REFRESH`, {
+      action: `SHOW_GRAPHQL_ERRORS`,
+      payload: errorsToDisplay
+    }]);
   } else {
-    window._gatsbyEvents.push([
-      `FAST_REFRESH`,
-      {
-        action: `CLEAR_GRAPHQL_ERRORS`,
-      },
-    ]);
+    window._gatsbyEvents.push([`FAST_REFRESH`, {
+      action: `CLEAR_GRAPHQL_ERRORS`
+    }]);
   }
 };
 

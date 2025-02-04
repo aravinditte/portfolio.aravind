@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // initializing global here for unsafe builtin usage at import time
 global.unsafeBuiltinUsage = [];
@@ -16,17 +16,14 @@ function createProxyHandler(prefix, options) {
       if (typeof value === `function`) {
         return function wrapper(...args) {
           const myErrorHolder = {
-            name: `Unsafe builtin usage ${path}`,
+            name: `Unsafe builtin usage ${path}`
           };
           Error.captureStackTrace(myErrorHolder, wrapper); // - loadPageDataSync already is tracked with dedicated warning messages,
           // so skipping marking it to avoid multiple messages for same usage
           // - node-gyp-build will use fs.readDirSync in attempt to load binaries
           // this should be ok to ignore.
 
-          if (
-            !myErrorHolder.stack.includes(`loadPageDataSync`) &&
-            !myErrorHolder.stack.includes(`node-gyp-build`)
-          ) {
+          if (!myErrorHolder.stack.includes(`loadPageDataSync`) && !myErrorHolder.stack.includes(`node-gyp-build`)) {
             global.unsafeBuiltinUsage.push(myErrorHolder.stack);
           }
 
@@ -37,7 +34,7 @@ function createProxyHandler(prefix, options) {
       }
 
       return value;
-    },
+    }
   };
 }
 

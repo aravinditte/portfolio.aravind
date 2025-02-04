@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 exports.__esModule = true;
 exports.RouteAnnouncerProps = void 0;
@@ -15,9 +15,9 @@ const RouteAnnouncerProps = {
     overflow: `hidden`,
     clip: `rect(0, 0, 0, 0)`,
     whiteSpace: `nowrap`,
-    border: 0,
+    border: 0
   },
-  'aria-live': `assertive`,
-  'aria-atomic': `true`,
+  "aria-live": `assertive`,
+  "aria-atomic": `true`
 };
 exports.RouteAnnouncerProps = RouteAnnouncerProps;

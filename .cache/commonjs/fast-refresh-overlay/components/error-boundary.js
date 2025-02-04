@@ -1,23 +1,23 @@
-'use strict';
+"use strict";
 
-var _interopRequireWildcard = require('@babel/runtime/helpers/interopRequireWildcard');
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
 exports.__esModule = true;
 exports.ErrorBoundary = void 0;
 
-var React = _interopRequireWildcard(require('react'));
+var React = _interopRequireWildcard(require("react"));
 
 class ErrorBoundary extends React.Component {
   constructor(...args) {
     super(...args);
     this.state = {
-      error: null,
+      error: null
     };
   }
 
   componentDidCatch(error) {
     this.setState({
-      error,
+      error
     });
   }
 
@@ -25,6 +25,7 @@ class ErrorBoundary extends React.Component {
     // Without this check => possible infinite loop
     return this.state.error && this.props.hasErrors ? null : this.props.children;
   }
+
 }
 
 exports.ErrorBoundary = ErrorBoundary;

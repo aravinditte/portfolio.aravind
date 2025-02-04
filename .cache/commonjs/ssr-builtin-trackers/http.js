@@ -1,7 +1,9 @@
-'use strict';
+"use strict";
 
-const { wrapModuleWithTracking } = require(`./tracking-unsafe-module-wrapper`);
+const {
+  wrapModuleWithTracking
+} = require(`./tracking-unsafe-module-wrapper`);
 
 module.exports = wrapModuleWithTracking(`http`, {
-  ignore: [`http.Agent`],
+  ignore: [`http.Agent`]
 });

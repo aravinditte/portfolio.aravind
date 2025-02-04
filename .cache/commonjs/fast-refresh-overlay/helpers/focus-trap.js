@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
 exports.default = _default;
 
-var _platform2 = _interopRequireDefault(require('platform'));
+var _platform2 = _interopRequireDefault(require("platform"));
 
-var _css = _interopRequireDefault(require('css.escape'));
+var _css = _interopRequireDefault(require("css.escape"));
 
 /* eslint-disable */
 // Adapted from https://github.com/medialize/ally.js
@@ -26,6 +26,7 @@ function nodeArray(input) {
     return input;
   } // instanceof Node - does not work with iframes
 
+
   if (input.nodeType !== undefined) {
     return [input];
   }
@@ -43,10 +44,10 @@ function nodeArray(input) {
 
 function contextToElement(_ref) {
   var context = _ref.context,
-    _ref$label = _ref.label,
-    label = _ref$label === undefined ? 'context-to-element' : _ref$label,
-    resolveDocument = _ref.resolveDocument,
-    defaultToDocument = _ref.defaultToDocument;
+      _ref$label = _ref.label,
+      label = _ref$label === undefined ? 'context-to-element' : _ref$label,
+      resolveDocument = _ref.resolveDocument,
+      defaultToDocument = _ref.defaultToDocument;
   var element = nodeArray(context)[0];
 
   if (resolveDocument && element && element.nodeType === Node.DOCUMENT_NODE) {
@@ -70,11 +71,11 @@ function contextToElement(_ref) {
 
 function getShadowHost() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context;
+      context = _ref.context;
 
   var element = contextToElement({
     label: 'get/shadow-host',
-    context: context,
+    context: context
   }); // walk up to the root
 
   var container = null;
@@ -84,6 +85,7 @@ function getShadowHost() {
     element = element.parentNode;
   } // https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeType
   // NOTE: Firefox 34 does not expose ShadowRoot.host (but 37 does)
+
 
   if (container.nodeType === container.DOCUMENT_FRAGMENT_NODE && container.host) {
     // the root is attached to a fragment node that has a host
@@ -109,7 +111,7 @@ function isActiveElement(context) {
   var element = contextToElement({
     label: 'is/active-element',
     resolveDocument: true,
-    context: context,
+    context: context
   });
 
   var _document = getDocument(element);
@@ -119,7 +121,7 @@ function isActiveElement(context) {
   }
 
   var shadowHost = getShadowHost({
-    context: element,
+    context: element
   });
 
   if (shadowHost && shadowHost.shadowRoot.activeElement === element) {
@@ -130,14 +132,15 @@ function isActiveElement(context) {
 } // [elem, elem.parent, elem.parent.parent, …, html]
 // will not contain the shadowRoot (DOCUMENT_FRAGMENT_NODE) and shadowHost
 
+
 function getParents() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context;
+      context = _ref.context;
 
   var list = [];
   var element = contextToElement({
     label: 'get/parents',
-    context: context,
+    context: context
   });
 
   while (element) {
@@ -153,6 +156,7 @@ function getParents() {
   return list;
 } // Element.prototype.matches may be available at a different name
 // https://developer.mozilla.org/en/docs/Web/API/Element/matches
+
 
 var names = ['matches', 'webkitMatchesSelector', 'mozMatchesSelector', 'msMatchesSelector'];
 var name = null;
@@ -175,6 +179,7 @@ function elementMatches(element, selector) {
 
   return element[name](selector);
 } // deep clone of original platform
+
 
 var platform = JSON.parse(JSON.stringify(_platform2.default)); // operating system
 
@@ -213,7 +218,7 @@ platform.is = {
   // INTERNET EXPLORERS
   IE9: TRIDENT && majorVersion === 9,
   IE10: TRIDENT && majorVersion === 10,
-  IE11: TRIDENT && majorVersion === 11,
+  IE11: TRIDENT && majorVersion === 11
 };
 
 function before() {
@@ -224,15 +229,12 @@ function before() {
     windowScrollTop: window.scrollTop,
     windowScrollLeft: window.scrollLeft,
     bodyScrollTop: document.body.scrollTop,
-    bodyScrollLeft: document.body.scrollLeft,
+    bodyScrollLeft: document.body.scrollLeft
   }; // wrap tests in an element hidden from screen readers to prevent them
   // from announcing focus, which can be quite irritating to the user
 
   var iframe = document.createElement('iframe');
-  iframe.setAttribute(
-    'style',
-    'position:absolute; position:fixed; top:0; left:-2px; width:1px; height:1px; overflow:hidden;',
-  );
+  iframe.setAttribute('style', 'position:absolute; position:fixed; top:0; left:-2px; width:1px; height:1px; overflow:hidden;');
   iframe.setAttribute('aria-live', 'off');
   iframe.setAttribute('aria-busy', 'true');
   iframe.setAttribute('aria-hidden', 'true');
@@ -262,14 +264,12 @@ function before() {
 // options.validate: (optional)
 //  {function} callback(element, focusTarget, document) to manipulate test-result
 
+
 function test(data, options) {
   // make sure we operate on a clean slate
   data.wrapper.innerHTML = ''; // create dummy element to test focusability of
 
-  var element =
-    typeof options.element === 'string'
-      ? data.document.createElement(options.element)
-      : options.element(data.wrapper, data.document); // allow callback to further specify dummy element
+  var element = typeof options.element === 'string' ? data.document.createElement(options.element) : options.element(data.wrapper, data.document); // allow callback to further specify dummy element
   // and optionally define element to focus
 
   var focus = options.mutate && options.mutate(element, data.wrapper, data.document);
@@ -278,13 +278,12 @@ function test(data, options) {
     focus = element;
   } // element needs to be part of the DOM to be focusable
 
+
   !element.parentNode && data.wrapper.appendChild(element); // test if the element with invalid tabindex can be focused
 
   focus && focus.focus && focus.focus(); // validate test's result
 
-  return options.validate
-    ? options.validate(element, focus, data.document)
-    : data.document.activeElement === focus;
+  return options.validate ? options.validate(element, focus, data.document) : data.document.activeElement === focus;
 }
 
 function after(data) {
@@ -318,6 +317,7 @@ function detectFocus(tests) {
   return results;
 } // this file is overwritten by `npm run build:pre`
 
+
 var version$1 = '1.4.1';
 /*
     Facility to cache test results in localStorage.
@@ -349,8 +349,7 @@ function writeLocalStorage(key, value) {
     // This can happen when a document is reloaded while Developer Tools have focus.
     try {
       window.localStorage && window.localStorage.removeItem(key);
-    } catch (e) {
-      // ignore
+    } catch (e) {// ignore
     }
 
     return;
@@ -358,12 +357,11 @@ function writeLocalStorage(key, value) {
 
   try {
     window.localStorage && window.localStorage.setItem(key, JSON.stringify(value));
-  } catch (e) {
-    // ignore
+  } catch (e) {// ignore
   }
 }
 
-var userAgent = (typeof window !== 'undefined' && window.navigator.userAgent) || '';
+var userAgent = typeof window !== 'undefined' && window.navigator.userAgent || '';
 var cacheKey = 'ally-supports-cache';
 var cache = readLocalStorage(cacheKey); // update the cache if ally or the user agent changed (newer version, etc)
 
@@ -383,7 +381,7 @@ var cache$1 = {
     });
     cache.time = new Date().toISOString();
     writeLocalStorage(cacheKey, cache);
-  },
+  }
 };
 
 function cssShadowPiercingDeepCombinator() {
@@ -413,25 +411,15 @@ var gif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAE
 var focusAreaImgTabindex = {
   element: 'div',
   mutate: function mutate(element) {
-    element.innerHTML =
-      '<map name="image-map-tabindex-test">' +
-      '<area shape="rect" coords="63,19,144,45"></map>' +
-      '<img usemap="#image-map-tabindex-test" tabindex="-1" alt="" src="' +
-      gif +
-      '">';
+    element.innerHTML = '<map name="image-map-tabindex-test">' + '<area shape="rect" coords="63,19,144,45"></map>' + '<img usemap="#image-map-tabindex-test" tabindex="-1" alt="" src="' + gif + '">';
     return element.querySelector('area');
-  },
+  }
 }; // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-usemap
 
 var focusAreaTabindex = {
   element: 'div',
   mutate: function mutate(element) {
-    element.innerHTML =
-      '<map name="image-map-tabindex-test">' +
-      '<area href="#void" tabindex="-1" shape="rect" coords="63,19,144,45"></map>' +
-      '<img usemap="#image-map-tabindex-test" alt="" src="' +
-      gif +
-      '">';
+    element.innerHTML = '<map name="image-map-tabindex-test">' + '<area href="#void" tabindex="-1" shape="rect" coords="63,19,144,45"></map>' + '<img usemap="#image-map-tabindex-test" alt="" src="' + gif + '">';
     return false;
   },
   validate: function validate(element, focusTarget, _document) {
@@ -444,18 +432,13 @@ var focusAreaTabindex = {
     var focus = element.querySelector('area');
     focus.focus();
     return _document.activeElement === focus;
-  },
+  }
 }; // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-usemap
 
 var focusAreaWithoutHref = {
   element: 'div',
   mutate: function mutate(element) {
-    element.innerHTML =
-      '<map name="image-map-area-href-test">' +
-      '<area shape="rect" coords="63,19,144,45"></map>' +
-      '<img usemap="#image-map-area-href-test" alt="" src="' +
-      gif +
-      '">';
+    element.innerHTML = '<map name="image-map-area-href-test">' + '<area shape="rect" coords="63,19,144,45"></map>' + '<img usemap="#image-map-area-href-test" alt="" src="' + gif + '">';
     return element.querySelector('area');
   },
   validate: function validate(element, focusTarget, _document) {
@@ -466,7 +449,7 @@ var focusAreaWithoutHref = {
     }
 
     return _document.activeElement === focusTarget;
-  },
+  }
 };
 var focusAudioWithoutControls = {
   name: 'can-focus-audio-without-controls',
@@ -475,10 +458,9 @@ var focusAudioWithoutControls = {
     try {
       // invalid media file can trigger warning in console, data-uri to prevent HTTP request
       element.setAttribute('src', gif);
-    } catch (e) {
-      // IE9 may throw "Error: Not implemented"
+    } catch (e) {// IE9 may throw "Error: Not implemented"
     }
-  },
+  }
 };
 var invalidGif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ'; // NOTE: https://github.com/medialize/ally.js/issues/35
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-usemap
@@ -486,13 +468,9 @@ var invalidGif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ZZZZZZZZZZZZZZZ
 var focusBrokenImageMap = {
   element: 'div',
   mutate: function mutate(element) {
-    element.innerHTML =
-      '<map name="broken-image-map-test"><area href="#void" shape="rect" coords="63,19,144,45"></map>' +
-      '<img usemap="#broken-image-map-test" alt="" src="' +
-      invalidGif +
-      '">';
+    element.innerHTML = '<map name="broken-image-map-test"><area href="#void" shape="rect" coords="63,19,144,45"></map>' + '<img usemap="#broken-image-map-test" alt="" src="' + invalidGif + '">';
     return element.querySelector('area');
-  },
+  }
 }; // Children of focusable elements with display:flex are focusable in IE10-11
 
 var focusChildrenOfFocusableFlexbox = {
@@ -502,7 +480,7 @@ var focusChildrenOfFocusableFlexbox = {
     element.setAttribute('style', 'display: -webkit-flex; display: -ms-flexbox; display: flex;');
     element.innerHTML = '<span style="display: block;">hello</span>';
     return element.querySelector('span');
-  },
+  }
 }; // fieldset[tabindex=0][disabled] should not be focusable, but Blink and WebKit disagree
 // @specification https://www.w3.org/TR/html5/disabled-elements.html#concept-element-disabled
 // @browser-issue Chromium https://crbug.com/453847
@@ -513,13 +491,13 @@ var focusFieldsetDisabled = {
   mutate: function mutate(element) {
     element.setAttribute('tabindex', 0);
     element.setAttribute('disabled', 'disabled');
-  },
+  }
 };
 var focusFieldset = {
   element: 'fieldset',
   mutate: function mutate(element) {
     element.innerHTML = '<legend>legend</legend><p>content</p>';
-  },
+  }
 }; // elements with display:flex are focusable in IE10-11
 
 var focusFlexboxContainer = {
@@ -527,7 +505,7 @@ var focusFlexboxContainer = {
   mutate: function mutate(element) {
     element.setAttribute('style', 'display: -webkit-flex; display: -ms-flexbox; display: flex;');
     element.innerHTML = '<span style="display: block;">hello</span>';
-  },
+  }
 }; // form[tabindex=0][disabled] should be focusable as the
 // specification doesn't know the disabled attribute on the form element
 // @specification https://www.w3.org/TR/html5/forms.html#the-form-element
@@ -537,7 +515,7 @@ var focusFormDisabled = {
   mutate: function mutate(element) {
     element.setAttribute('tabindex', 0);
     element.setAttribute('disabled', 'disabled');
-  },
+  }
 }; // NOTE: https://github.com/medialize/ally.js/issues/35
 // fixes https://github.com/medialize/ally.js/issues/20
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-ismap
@@ -548,25 +526,21 @@ var focusImgIsmap = {
     element.href = '#void';
     element.innerHTML = '<img ismap src="' + gif + '" alt="">';
     return element.querySelector('img');
-  },
+  }
 }; // NOTE: https://github.com/medialize/ally.js/issues/35
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-usemap
 
 var focusImgUsemapTabindex = {
   element: 'div',
   mutate: function mutate(element) {
-    element.innerHTML =
-      '<map name="image-map-tabindex-test"><area href="#void" shape="rect" coords="63,19,144,45"></map>' +
-      '<img usemap="#image-map-tabindex-test" tabindex="-1" alt="" ' +
-      'src="' +
-      gif +
-      '">';
+    element.innerHTML = '<map name="image-map-tabindex-test"><area href="#void" shape="rect" coords="63,19,144,45"></map>' + '<img usemap="#image-map-tabindex-test" tabindex="-1" alt="" ' + 'src="' + gif + '">';
     return element.querySelector('img');
-  },
+  }
 };
 var focusInHiddenIframe = {
   element: function element(wrapper, _document) {
     var iframe = _document.createElement('iframe'); // iframe must be part of the DOM before accessing the contentWindow is possible
+
 
     wrapper.appendChild(iframe); // create the iframe's default document (<html><head></head><body></body></html>)
 
@@ -586,7 +560,7 @@ var focusInHiddenIframe = {
     var iframeDocument = iframe.contentWindow.document;
     var focus = iframeDocument.querySelector('input');
     return iframeDocument.activeElement === focus;
-  },
+  }
 };
 var result = !platform.is.WEBKIT;
 
@@ -595,11 +569,12 @@ function focusInZeroDimensionObject() {
 } // Firefox allows *any* value and treats invalid values like tabindex="-1"
 // @browser-issue Gecko https://bugzilla.mozilla.org/show_bug.cgi?id=1128054
 
+
 var focusInvalidTabindex = {
   element: 'div',
   mutate: function mutate(element) {
     element.setAttribute('tabindex', 'invalid-value');
-  },
+  }
 };
 var focusLabelTabindex = {
   element: 'label',
@@ -615,12 +590,9 @@ var focusLabelTabindex = {
 
     element.focus();
     return _document.activeElement === element;
-  },
+  }
 };
-var svg =
-  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtb' +
-  'G5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0ic3ZnIj48dGV4dCB4PSIxMCIgeT0iMjAiIGlkPSJ' +
-  'zdmctbGluay10ZXh0Ij50ZXh0PC90ZXh0Pjwvc3ZnPg=='; // Note: IE10 on BrowserStack does not like this test
+var svg = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtb' + 'G5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0ic3ZnIj48dGV4dCB4PSIxMCIgeT0iMjAiIGlkPSJ' + 'zdmctbGluay10ZXh0Ij50ZXh0PC90ZXh0Pjwvc3ZnPg=='; // Note: IE10 on BrowserStack does not like this test
 
 var focusObjectSvgHidden = {
   element: 'object',
@@ -630,7 +602,7 @@ var focusObjectSvgHidden = {
     element.setAttribute('width', '200');
     element.setAttribute('height', '50');
     element.style.visibility = 'hidden';
-  },
+  }
 }; // Note: IE10 on BrowserStack does not like this test
 
 var focusObjectSvg = {
@@ -650,7 +622,7 @@ var focusObjectSvg = {
     }
 
     return _document.activeElement === element;
-  },
+  }
 }; // Every Environment except IE9 considers SWF objects focusable
 
 var result$1 = !platform.is.IE9;
@@ -662,19 +634,14 @@ function focusObjectSwf() {
 var focusRedirectImgUsemap = {
   element: 'div',
   mutate: function mutate(element) {
-    element.innerHTML =
-      '<map name="focus-redirect-img-usemap"><area href="#void" shape="rect" coords="63,19,144,45"></map>' +
-      '<img usemap="#focus-redirect-img-usemap" alt="" ' +
-      'src="' +
-      gif +
-      '">'; // focus the <img>, not the <div>
+    element.innerHTML = '<map name="focus-redirect-img-usemap"><area href="#void" shape="rect" coords="63,19,144,45"></map>' + '<img usemap="#focus-redirect-img-usemap" alt="" ' + 'src="' + gif + '">'; // focus the <img>, not the <div>
 
     return element.querySelector('img');
   },
   validate: function validate(element, focusTarget, _document) {
     var target = element.querySelector('area');
     return _document.activeElement === target;
-  },
+  }
 }; // see https://jsbin.com/nenirisage/edit?html,js,console,output
 
 var focusRedirectLegend = {
@@ -691,12 +658,8 @@ var focusRedirectLegend = {
 
     element.focus();
     element.querySelector('legend').focus();
-    return (
-      (_document.activeElement === focusable && 'focusable') ||
-      (_document.activeElement === tabbable && 'tabbable') ||
-      ''
-    );
-  },
+    return _document.activeElement === focusable && 'focusable' || _document.activeElement === tabbable && 'tabbable' || '';
+  }
 }; // https://github.com/medialize/ally.js/issues/21
 
 var focusScrollBody = {
@@ -705,7 +668,7 @@ var focusScrollBody = {
     element.setAttribute('style', 'width: 100px; height: 50px; overflow: auto;');
     element.innerHTML = '<div style="width: 500px; height: 40px;">scrollable content</div>';
     return element.querySelector('div');
-  },
+  }
 }; // https://github.com/medialize/ally.js/issues/21
 
 var focusScrollContainerWithoutOverflow = {
@@ -713,7 +676,7 @@ var focusScrollContainerWithoutOverflow = {
   mutate: function mutate(element) {
     element.setAttribute('style', 'width: 100px; height: 50px;');
     element.innerHTML = '<div style="width: 500px; height: 40px;">scrollable content</div>';
-  },
+  }
 }; // https://github.com/medialize/ally.js/issues/21
 
 var focusScrollContainer = {
@@ -721,20 +684,19 @@ var focusScrollContainer = {
   mutate: function mutate(element) {
     element.setAttribute('style', 'width: 100px; height: 50px; overflow: auto;');
     element.innerHTML = '<div style="width: 500px; height: 40px;">scrollable content</div>';
-  },
+  }
 };
 var focusSummary = {
   element: 'details',
   mutate: function mutate(element) {
     element.innerHTML = '<summary>foo</summary><p>content</p>';
     return element.firstElementChild;
-  },
+  }
 };
 
 function makeFocusableForeignObject() {
   var fragment = document.createElement('div');
-  fragment.innerHTML =
-    '<svg><foreignObject width="30" height="30">\n      <input type="text"/>\n  </foreignObject></svg>';
+  fragment.innerHTML = '<svg><foreignObject width="30" height="30">\n      <input type="text"/>\n  </foreignObject></svg>';
   return fragment.firstChild.firstChild;
 }
 
@@ -747,6 +709,7 @@ function focusSvgForeignObjectHack(element) {
   if (!isSvgElement) {
     return false;
   } // inject and focus an <input> element into the SVG element to receive focus
+
 
   var foreignObject = makeFocusableForeignObject();
   element.appendChild(foreignObject);
@@ -763,11 +726,7 @@ function focusSvgForeignObjectHack(element) {
 }
 
 function generate(element) {
-  return (
-    '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
-    element +
-    '</svg>'
-  );
+  return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' + element + '</svg>';
 }
 
 function focus(element) {
@@ -793,7 +752,7 @@ var focusSvgFocusableAttribute = {
     element.innerHTML = generate('<text focusable="true">a</text>');
     return element.querySelector('text');
   },
-  validate: validate,
+  validate: validate
 };
 var focusSvgTabindexAttribute = {
   element: 'div',
@@ -801,7 +760,7 @@ var focusSvgTabindexAttribute = {
     element.innerHTML = generate('<text tabindex="0">a</text>');
     return element.querySelector('text');
   },
-  validate: validate,
+  validate: validate
 };
 var focusSvgNegativeTabindexAttribute = {
   element: 'div',
@@ -809,41 +768,30 @@ var focusSvgNegativeTabindexAttribute = {
     element.innerHTML = generate('<text tabindex="-1">a</text>');
     return element.querySelector('text');
   },
-  validate: validate,
+  validate: validate
 };
 var focusSvgUseTabindex = {
   element: 'div',
   mutate: function mutate(element) {
-    element.innerHTML = generate(
-      [
-        '<g id="ally-test-target"><a xlink:href="#void"><text>link</text></a></g>',
-        '<use xlink:href="#ally-test-target" x="0" y="0" tabindex="-1" />',
-      ].join(''),
-    );
+    element.innerHTML = generate(['<g id="ally-test-target"><a xlink:href="#void"><text>link</text></a></g>', '<use xlink:href="#ally-test-target" x="0" y="0" tabindex="-1" />'].join(''));
     return element.querySelector('use');
   },
-  validate: validate,
+  validate: validate
 };
 var focusSvgForeignobjectTabindex = {
   element: 'div',
   mutate: function mutate(element) {
-    element.innerHTML = generate(
-      '<foreignObject tabindex="-1"><input type="text" /></foreignObject>',
-    ); // Safari 8's quersSelector() can't identify foreignObject, but getElementyByTagName() can
+    element.innerHTML = generate('<foreignObject tabindex="-1"><input type="text" /></foreignObject>'); // Safari 8's quersSelector() can't identify foreignObject, but getElementyByTagName() can
 
-    return (
-      element.querySelector('foreignObject') || element.getElementsByTagName('foreignObject')[0]
-    );
+    return element.querySelector('foreignObject') || element.getElementsByTagName('foreignObject')[0];
   },
-  validate: validate,
+  validate: validate
 }; // Firefox seems to be handling the SVG-document-in-iframe creation asynchronously
 // and thereby produces a false negative test result. Thus the test is pointless
 // and we resort to UA sniffing once again.
 // see http://jsbin.com/vunadohoko/1/edit?js,console,output
 
-var result$2 = Boolean(
-  platform.is.GECKO && typeof SVGElement !== 'undefined' && SVGElement.prototype.focus,
-);
+var result$2 = Boolean(platform.is.GECKO && typeof SVGElement !== 'undefined' && SVGElement.prototype.focus);
 
 function focusSvgInIframe() {
   return result$2;
@@ -855,7 +803,7 @@ var focusSvg = {
     element.innerHTML = generate('');
     return element.firstChild;
   },
-  validate: validate,
+  validate: validate
 }; // Firefox allows *any* value and treats invalid values like tabindex="-1"
 // @browser-issue Gecko https://bugzilla.mozilla.org/show_bug.cgi?id=1128054
 
@@ -863,7 +811,7 @@ var focusTabindexTrailingCharacters = {
   element: 'div',
   mutate: function mutate(element) {
     element.setAttribute('tabindex', '3x');
-  },
+  }
 };
 var focusTable = {
   element: 'table',
@@ -875,7 +823,7 @@ var focusTable = {
 
     fragment.innerHTML = '<tr><td>cell</td></tr>';
     element.appendChild(fragment);
-  },
+  }
 };
 var focusVideoWithoutControls = {
   element: 'video',
@@ -883,10 +831,9 @@ var focusVideoWithoutControls = {
     try {
       // invalid media file can trigger warning in console, data-uri to prevent HTTP request
       element.setAttribute('src', gif);
-    } catch (e) {
-      // IE9 may throw "Error: Not implemented"
+    } catch (e) {// IE9 may throw "Error: Not implemented"
     }
-  },
+  }
 }; // https://jsbin.com/vafaba/3/edit?html,js,console,output
 
 var result$3 = platform.is.GECKO || platform.is.TRIDENT || platform.is.EDGE;
@@ -900,7 +847,7 @@ var testCallbacks = {
   focusInZeroDimensionObject: focusInZeroDimensionObject,
   focusObjectSwf: focusObjectSwf,
   focusSvgInIframe: focusSvgInIframe,
-  tabsequenceAreaAtImgPosition: tabsequenceAreaAtImgPosition,
+  tabsequenceAreaAtImgPosition: tabsequenceAreaAtImgPosition
 };
 var testDescriptions = {
   focusAreaImgTabindex: focusAreaImgTabindex,
@@ -934,7 +881,7 @@ var testDescriptions = {
   focusSvg: focusSvg,
   focusTabindexTrailingCharacters: focusTabindexTrailingCharacters,
   focusTable: focusTable,
-  focusVideoWithoutControls: focusVideoWithoutControls,
+  focusVideoWithoutControls: focusVideoWithoutControls
 };
 
 function executeTests() {
@@ -973,13 +920,11 @@ function isValidTabindex(context) {
     supports = _supports();
   }
 
-  var validIntegerPattern = supports.focusTabindexTrailingCharacters
-    ? validIntegerPatternWithTrailing
-    : validIntegerPatternNoTrailing;
+  var validIntegerPattern = supports.focusTabindexTrailingCharacters ? validIntegerPatternWithTrailing : validIntegerPatternNoTrailing;
   var element = contextToElement({
     label: 'is/valid-tabindex',
     resolveDocument: true,
-    context: context,
+    context: context
   }); // Edge 14 has a capitalization problem on SVG elements,
   // see https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/9282058/
 
@@ -990,15 +935,18 @@ function isValidTabindex(context) {
     return false;
   } // older Firefox and Internet Explorer don't support tabindex on SVG elements
 
+
   var isSvgElement = element.ownerSVGElement || element.nodeName.toLowerCase() === 'svg';
 
   if (isSvgElement && !supports.focusSvgTabindexAttribute) {
     return false;
   } // @browser-issue Gecko https://bugzilla.mozilla.org/show_bug.cgi?id=1128054
 
+
   if (supports.focusInvalidTabindex) {
     return true;
   } // an element matches the tabindex selector even if its value is invalid
+
 
   var tabindex = element.getAttribute(hasTabindex ? 'tabindex' : 'tabIndex'); // IE11 parses tabindex="" as the value "-32768"
   // @browser-issue Trident https://connect.microsoft.com/IE/feedback/details/1072965
@@ -1016,6 +964,7 @@ function tabindexValue(element) {
   } // Edge 14 has a capitalization problem on SVG elements,
   // see https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/9282058/
 
+
   var hasTabindex = element.hasAttribute('tabindex');
   var attributeName = hasTabindex ? 'tabindex' : 'tabIndex'; // @browser-issue Gecko https://bugzilla.mozilla.org/show_bug.cgi?id=1128054
 
@@ -1025,6 +974,7 @@ function tabindexValue(element) {
 // separate testing of this file's functions is not necessary,
 // as they're implicitly tested by way of the consumers
 
+
 function isUserModifyWritable(style) {
   // https://www.w3.org/TR/1999/WD-css3-userint-19990916#user-modify
   // https://github.com/medialize/ally.js/issues/17
@@ -1033,11 +983,7 @@ function isUserModifyWritable(style) {
 }
 
 function hasCssOverflowScroll(style) {
-  return [
-    style.getPropertyValue('overflow'),
-    style.getPropertyValue('overflow-x'),
-    style.getPropertyValue('overflow-y'),
-  ].some(function (overflow) {
+  return [style.getPropertyValue('overflow'), style.getPropertyValue('overflow-x'), style.getPropertyValue('overflow-y')].some(function (overflow) {
     return overflow === 'auto' || overflow === 'scroll';
   });
 }
@@ -1054,12 +1000,7 @@ function isScrollableContainer(element, nodeName, parentNodeName, parentStyle) {
     return false;
   }
 
-  if (
-    parentNodeName &&
-    parentNodeName !== 'div' &&
-    parentNodeName !== 'span' &&
-    !hasCssOverflowScroll(parentStyle)
-  ) {
+  if (parentNodeName && parentNodeName !== 'div' && parentNodeName !== 'span' && !hasCssOverflowScroll(parentStyle)) {
     return false;
   }
 
@@ -1070,16 +1011,13 @@ var supports$1 = void 0;
 
 function isFocusRelevantRules() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context,
-    _ref$except = _ref.except,
-    except =
-      _ref$except === undefined
-        ? {
-            flexbox: false,
-            scrollable: false,
-            shadow: false,
-          }
-        : _ref$except;
+      context = _ref.context,
+      _ref$except = _ref.except,
+      except = _ref$except === undefined ? {
+    flexbox: false,
+    scrollable: false,
+    shadow: false
+  } : _ref$except;
 
   if (!supports$1) {
     supports$1 = _supports();
@@ -1088,7 +1026,7 @@ function isFocusRelevantRules() {
   var element = contextToElement({
     label: 'is/focus-relevant',
     resolveDocument: true,
-    context: context,
+    context: context
   });
 
   if (!except.shadow && element.shadowRoot) {
@@ -1103,12 +1041,7 @@ function isFocusRelevantRules() {
     return false;
   }
 
-  if (
-    nodeName === 'input' ||
-    nodeName === 'select' ||
-    nodeName === 'button' ||
-    nodeName === 'textarea'
-  ) {
+  if (nodeName === 'input' || nodeName === 'select' || nodeName === 'button' || nodeName === 'textarea') {
     return true;
   }
 
@@ -1164,17 +1097,11 @@ function isFocusRelevantRules() {
     return true;
   }
 
-  if (
-    nodeName === 'audio' &&
-    (supports$1.focusAudioWithoutControls || element.hasAttribute('controls'))
-  ) {
+  if (nodeName === 'audio' && (supports$1.focusAudioWithoutControls || element.hasAttribute('controls'))) {
     return true;
   }
 
-  if (
-    nodeName === 'video' &&
-    (supports$1.focusVideoWithoutControls || element.hasAttribute('controls'))
-  ) {
+  if (nodeName === 'video' && (supports$1.focusVideoWithoutControls || element.hasAttribute('controls'))) {
     return true;
   }
 
@@ -1187,9 +1114,7 @@ function isFocusRelevantRules() {
   if (nodeName === 'img' && element.hasAttribute('usemap')) {
     // Gecko, Trident and Edge do not allow an image with an image map and tabindex to be focused,
     // it appears the tabindex is overruled so focus is still forwarded to the <map>
-    return (
-      (validTabindex && supports$1.focusImgUsemapTabindex) || supports$1.focusRedirectImgUsemap
-    );
+    return validTabindex && supports$1.focusImgUsemapTabindex || supports$1.focusRedirectImgUsemap;
   }
 
   if (supports$1.focusTable && (nodeName === 'table' || nodeName === 'td')) {
@@ -1221,12 +1146,7 @@ function isFocusRelevantRules() {
     return true;
   }
 
-  if (
-    (isSvgElement || isSvgContent) &&
-    element.focus &&
-    !supports$1.focusSvgNegativeTabindexAttribute &&
-    tabindex < 0
-  ) {
+  if ((isSvgElement || isSvgContent) && element.focus && !supports$1.focusSvgNegativeTabindexAttribute && tabindex < 0) {
     // Firefox 51 and 52 treat any natively tabbable SVG element with
     // tabindex="-1" as tabbable and everything else as inert
     // see https://bugzilla.mozilla.org/show_bug.cgi?id=1302340
@@ -1234,16 +1154,8 @@ function isFocusRelevantRules() {
   }
 
   if (isSvgElement) {
-    return (
-      validTabindex ||
-      supports$1.focusSvg ||
-      supports$1.focusSvgInIframe || // Internet Explorer understands the focusable attribute introduced in SVG Tiny 1.2
-      Boolean(
-        supports$1.focusSvgFocusableAttribute &&
-          focusableAttribute &&
-          focusableAttribute === 'true',
-      )
-    );
+    return validTabindex || supports$1.focusSvg || supports$1.focusSvgInIframe || // Internet Explorer understands the focusable attribute introduced in SVG Tiny 1.2
+    Boolean(supports$1.focusSvgFocusableAttribute && focusableAttribute && focusableAttribute === 'true');
   }
 
   if (isSvgContent) {
@@ -1256,6 +1168,7 @@ function isFocusRelevantRules() {
       return focusableAttribute === 'true';
     }
   } // https://www.w3.org/TR/html5/editing.html#sequential-focus-navigation-and-the-tabindex-attribute
+
 
   if (validTabindex) {
     return true;
@@ -1271,7 +1184,7 @@ function isFocusRelevantRules() {
     // IE10-11 considers the <img> in <a href><img ismap> focusable
     // https://github.com/medialize/ally.js/issues/20
     var hasLinkParent = getParents({
-      context: element,
+      context: element
     }).some(function (parent) {
       return parent.nodeName.toLowerCase() === 'a' && parent.hasAttribute('href');
     });
@@ -1280,6 +1193,7 @@ function isFocusRelevantRules() {
       return true;
     }
   } // https://github.com/medialize/ally.js/issues/21
+
 
   if (!except.scrollable && supports$1.focusScrollContainer) {
     if (supports$1.focusScrollContainerWithoutOverflow) {
@@ -1307,14 +1221,12 @@ function isFocusRelevantRules() {
     var parentNodeName = parent.nodeName.toLowerCase();
     var parentStyle = window.getComputedStyle(parent, null);
 
-    if (
-      supports$1.focusScrollBody &&
-      isScrollableContainer(parent, nodeName, parentNodeName, parentStyle)
-    ) {
+    if (supports$1.focusScrollBody && isScrollableContainer(parent, nodeName, parentNodeName, parentStyle)) {
       // scrollable bodies are focusable Internet Explorer
       // https://github.com/medialize/ally.js/issues/21
       return true;
     } // Children of focusable elements with display:flex are focusable in IE10-11
+
 
     if (supports$1.focusChildrenOfFocusableFlexbox) {
       if (hasCssDisplayFlex(parentStyle)) {
@@ -1325,8 +1237,10 @@ function isFocusRelevantRules() {
   // but that property is not exposed to the DOM
   // https://www.w3.org/TR/html5/editing.html#inert
 
+
   return false;
 } // bind exceptions to an iterator callback
+
 
 isFocusRelevantRules.except = function () {
   var except = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -1334,13 +1248,14 @@ isFocusRelevantRules.except = function () {
   var isFocusRelevant = function isFocusRelevant(context) {
     return isFocusRelevantRules({
       context: context,
-      except: except,
+      except: except
     });
   };
 
   isFocusRelevant.rules = isFocusRelevantRules;
   return isFocusRelevant;
 }; // provide isFocusRelevant(context) as default iterator callback
+
 
 var isFocusRelevant = isFocusRelevantRules.except({});
 
@@ -1356,6 +1271,7 @@ function findIndex(array, callback) {
     return -1;
   } // otherwise loop over array
 
+
   for (var i = 0; i < length; i++) {
     if (callback(array[i], i, array)) {
       return i;
@@ -1368,12 +1284,9 @@ function findIndex(array, callback) {
 function getContentDocument(node) {
   try {
     // works on <object> and <iframe>
-    return (
-      node.contentDocument || // works on <object> and <iframe>
-      (node.contentWindow && node.contentWindow.document) || // works on <object> and <iframe> that contain SVG
-      (node.getSVGDocument && node.getSVGDocument()) ||
-      null
-    );
+    return node.contentDocument || // works on <object> and <iframe>
+    node.contentWindow && node.contentWindow.document || // works on <object> and <iframe> that contain SVG
+    node.getSVGDocument && node.getSVGDocument() || null;
   } catch (e) {
     // SecurityError: Failed to read the 'contentDocument' property from 'HTMLObjectElement'
     // also IE may throw member not found exception e.g. on <object type="image/png">
@@ -1402,14 +1315,7 @@ function selectInShadows(selector) {
     return selector;
   }
 
-  return (
-    selector +
-    shadowPrefix +
-    selector
-      .replace(/\s*,\s*/g, ',')
-      .split(',')
-      .join(shadowPrefix)
-  );
+  return selector + shadowPrefix + selector.replace(/\s*,\s*/g, ',').split(',').join(shadowPrefix);
 }
 
 var selector = void 0;
@@ -1459,6 +1365,7 @@ function getFrameElement(element) {
 } // https://www.w3.org/TR/html5/rendering.html#being-rendered
 // <area> is not rendered, but we *consider* it visible to simplfiy this function's usage
 
+
 var notRenderedElementsPattern = /^(area)$/;
 
 function computedStyle(element, property) {
@@ -1500,6 +1407,7 @@ function notVisible(_path) {
     return true;
   } // there may be a hidden element, but the closest element is visible
 
+
   return false;
 }
 
@@ -1518,23 +1426,20 @@ function collapsedParent(_path) {
 
 function isVisibleRules() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context,
-    _ref$except = _ref.except,
-    except =
-      _ref$except === undefined
-        ? {
-            notRendered: false,
-            cssDisplay: false,
-            cssVisibility: false,
-            detailsElement: false,
-            browsingContext: false,
-          }
-        : _ref$except;
+      context = _ref.context,
+      _ref$except = _ref.except,
+      except = _ref$except === undefined ? {
+    notRendered: false,
+    cssDisplay: false,
+    cssVisibility: false,
+    detailsElement: false,
+    browsingContext: false
+  } : _ref$except;
 
   var element = contextToElement({
     label: 'is/visible',
     resolveDocument: true,
-    context: context,
+    context: context
   });
   var nodeName = element.nodeName.toLowerCase();
 
@@ -1543,10 +1448,11 @@ function isVisibleRules() {
   }
 
   var _path = getParents({
-    context: element,
+    context: element
   }); // in Internet Explorer <audio> has a default display: none, where others have display: inline
   // but IE allows focusing <audio style="display:none">, but not <div display:none><audio>
   // this is irrelevant to other browsers, as the controls attribute is required to make <audio> focusable
+
 
   var isAudioWithoutControls = nodeName === 'audio' && !element.hasAttribute('controls');
 
@@ -1577,19 +1483,21 @@ function isVisibleRules() {
   return true;
 } // bind exceptions to an iterator callback
 
+
 isVisibleRules.except = function () {
   var except = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   var isVisible = function isVisible(context) {
     return isVisibleRules({
       context: context,
-      except: except,
+      except: except
     });
   };
 
   isVisible.rules = isVisibleRules;
   return isVisible;
 }; // provide isVisible(context) as default iterator callback
+
 
 var isVisible = isVisibleRules.except({});
 
@@ -1614,6 +1522,7 @@ function getImageOfArea(element) {
   //   https://developer.mozilla.org/en-US/docs/Web/API/HTMLMapElement
   // the image must be valid and loaded for the map to take effect
 
+
   var _document = getDocument(element);
 
   return _document.querySelector('img[usemap="#' + (0, _css.default)(map.name) + '"]') || null;
@@ -1630,7 +1539,7 @@ function isValidArea(context) {
 
   var element = contextToElement({
     label: 'is/valid-area',
-    context: context,
+    context: context
   });
   var nodeName = element.nodeName.toLowerCase();
 
@@ -1652,31 +1561,26 @@ function isValidArea(context) {
   } // Firefox only allows fully loaded images to reference image maps
   // https://stereochro.me/ideas/detecting-broken-images-js
 
-  if (
-    !supports$2.focusBrokenImageMap &&
-    (!img.complete || !img.naturalHeight || img.offsetWidth <= 0 || img.offsetHeight <= 0)
-  ) {
+
+  if (!supports$2.focusBrokenImageMap && (!img.complete || !img.naturalHeight || img.offsetWidth <= 0 || img.offsetHeight <= 0)) {
     return false;
   } // Firefox supports.can focus area elements even if they don't have an href attribute
+
 
   if (!supports$2.focusAreaWithoutHref && !element.href) {
     // Internet explorer supports.can focus area elements without href if either
     // the area element or the image element has a tabindex attribute
-    return (
-      (supports$2.focusAreaTabindex && hasTabindex) ||
-      (supports$2.focusAreaImgTabindex && img.hasAttribute('tabindex'))
-    );
+    return supports$2.focusAreaTabindex && hasTabindex || supports$2.focusAreaImgTabindex && img.hasAttribute('tabindex');
   } // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-usemap
 
-  var childOfInteractive = getParents({
-    context: img,
-  })
-    .slice(1)
-    .some(function (_element) {
-      var name = _element.nodeName.toLowerCase();
 
-      return name === 'button' || name === 'a';
-    });
+  var childOfInteractive = getParents({
+    context: img
+  }).slice(1).some(function (_element) {
+    var name = _element.nodeName.toLowerCase();
+
+    return name === 'button' || name === 'a';
+  });
 
   if (childOfInteractive) {
     return false;
@@ -1694,7 +1598,7 @@ var disabledElements = {
   textarea: true,
   button: true,
   fieldset: true,
-  form: true,
+  form: true
 };
 
 function isNativeDisabledSupported(context) {
@@ -1714,7 +1618,7 @@ function isNativeDisabledSupported(context) {
 
   var element = contextToElement({
     label: 'is/native-disabled-supported',
-    context: context,
+    context: context
   });
   var nodeName = element.nodeName.toLowerCase();
   return Boolean(disabledElementsPattern.test(nodeName));
@@ -1739,7 +1643,7 @@ function isDisabled(context) {
 
   var element = contextToElement({
     label: 'is/disabled',
-    context: context,
+    context: context
   });
 
   if (element.hasAttribute('data-ally-disabled')) {
@@ -1758,7 +1662,7 @@ function isDisabled(context) {
   }
 
   var parents = getParents({
-    context: element,
+    context: element
   });
 
   if (parents.some(isDisabledFieldset)) {
@@ -1776,30 +1680,24 @@ function isDisabled(context) {
 
 function isOnlyTabbableRules() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context,
-    _ref$except = _ref.except,
-    except =
-      _ref$except === undefined
-        ? {
-            onlyFocusableBrowsingContext: false,
-            visible: false,
-          }
-        : _ref$except;
+      context = _ref.context,
+      _ref$except = _ref.except,
+      except = _ref$except === undefined ? {
+    onlyFocusableBrowsingContext: false,
+    visible: false
+  } : _ref$except;
 
   var element = contextToElement({
     label: 'is/only-tabbable',
     resolveDocument: true,
-    context: context,
+    context: context
   });
 
   if (!except.visible && !isVisible(element)) {
     return false;
   }
 
-  if (
-    !except.onlyFocusableBrowsingContext &&
-    (platform.is.GECKO || platform.is.TRIDENT || platform.is.EDGE)
-  ) {
+  if (!except.onlyFocusableBrowsingContext && (platform.is.GECKO || platform.is.TRIDENT || platform.is.EDGE)) {
     var frameElement = getFrameElement(element);
 
     if (frameElement) {
@@ -1821,6 +1719,7 @@ function isOnlyTabbableRules() {
   // Firefox 51 added the focus management DOM API (.focus and .blur) to SVGElement,
   // see https://bugzilla.mozilla.org/show_bug.cgi?id=778654
 
+
   if (platform.is.GECKO && element.ownerSVGElement && !element.focus) {
     if (nodeName === 'a' && element.hasAttribute('xlink:href')) {
       // any focusable child of <svg> cannot be focused, but tabbed to
@@ -1833,19 +1732,21 @@ function isOnlyTabbableRules() {
   return false;
 } // bind exceptions to an iterator callback
 
+
 isOnlyTabbableRules.except = function () {
   var except = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   var isOnlyTabbable = function isOnlyTabbable(context) {
     return isOnlyTabbableRules({
       context: context,
-      except: except,
+      except: except
     });
   };
 
   isOnlyTabbable.rules = isOnlyTabbableRules;
   return isOnlyTabbable;
 }; // provide isOnlyTabbable(context) as default iterator callback
+
 
 var isOnlyTabbable = isOnlyTabbableRules.except({});
 var supports$5 = void 0;
@@ -1902,16 +1803,13 @@ function isOnlyFocusRelevant(element) {
 
 function isFocusableRules() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context,
-    _ref$except = _ref.except,
-    except =
-      _ref$except === undefined
-        ? {
-            disabled: false,
-            visible: false,
-            onlyTabbable: false,
-          }
-        : _ref$except;
+      context = _ref.context,
+      _ref$except = _ref.except,
+      except = _ref$except === undefined ? {
+    disabled: false,
+    visible: false,
+    onlyTabbable: false
+  } : _ref$except;
 
   if (!supports$5) {
     supports$5 = _supports();
@@ -1919,17 +1817,17 @@ function isFocusableRules() {
 
   var _isOnlyTabbable = isOnlyTabbable.rules.except({
     onlyFocusableBrowsingContext: true,
-    visible: except.visible,
+    visible: except.visible
   });
 
   var element = contextToElement({
     label: 'is/focusable',
     resolveDocument: true,
-    context: context,
+    context: context
   });
   var focusRelevant = isFocusRelevant.rules({
     context: element,
-    except: except,
+    except: except
   });
 
   if (!focusRelevant || isOnlyFocusRelevant(element)) {
@@ -1945,10 +1843,11 @@ function isFocusableRules() {
     return false;
   } // elements that are not rendered, cannot be focused
 
+
   if (!except.visible) {
     var visibilityOptions = {
       context: element,
-      except: {},
+      except: {}
     };
 
     if (supports$5.focusInHiddenIframe) {
@@ -1986,17 +1885,13 @@ function isFocusableRules() {
 
   var nodeName = element.nodeName.toLowerCase();
 
-  if (
-    nodeName === 'svg' &&
-    supports$5.focusSvgInIframe &&
-    !frameElement &&
-    element.getAttribute('tabindex') === null
-  ) {
+  if (nodeName === 'svg' && supports$5.focusSvgInIframe && !frameElement && element.getAttribute('tabindex') === null) {
     return false;
   }
 
   return true;
 } // bind exceptions to an iterator callback
+
 
 isFocusableRules.except = function () {
   var except = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -2004,13 +1899,14 @@ isFocusableRules.except = function () {
   var isFocusable = function isFocusable(context) {
     return isFocusableRules({
       context: context,
-      except: except,
+      except: except
     });
   };
 
   isFocusable.rules = isFocusableRules;
   return isFocusable;
 }; // provide isFocusRelevant(context) as default iterator callback
+
 
 var isFocusable = isFocusableRules.except({});
 
@@ -2032,6 +1928,7 @@ function createFilter(condition) {
   }; // IE requires a function, Browsers require {acceptNode: function}
   // see http://www.bennadel.com/blog/2607-finding-html-comment-nodes-in-the-dom-using-treewalker.htm
 
+
   filter.acceptNode = filter;
   return filter;
 }
@@ -2040,28 +1937,27 @@ var PossiblyFocusableFilter = createFilter(isFocusRelevant);
 
 function queryFocusableStrict() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context,
-    includeContext = _ref.includeContext,
-    includeOnlyTabbable = _ref.includeOnlyTabbable,
-    strategy = _ref.strategy;
+      context = _ref.context,
+      includeContext = _ref.includeContext,
+      includeOnlyTabbable = _ref.includeOnlyTabbable,
+      strategy = _ref.strategy;
 
   if (!context) {
     context = document.documentElement;
   }
 
   var _isFocusable = isFocusable.rules.except({
-    onlyTabbable: includeOnlyTabbable,
+    onlyTabbable: includeOnlyTabbable
   });
 
   var _document = getDocument(context); // see https://developer.mozilla.org/en-US/docs/Web/API/Document/createTreeWalker
 
-  var walker = _document.createTreeWalker(
-    // root element to start search in
-    context, // element type filter
-    NodeFilter.SHOW_ELEMENT, // custom NodeFilter filter
-    strategy === 'all' ? PossiblyFocusableFilter : createFilter(_isFocusable), // deprecated, but IE requires it
-    false,
-  );
+
+  var walker = _document.createTreeWalker( // root element to start search in
+  context, // element type filter
+  NodeFilter.SHOW_ELEMENT, // custom NodeFilter filter
+  strategy === 'all' ? PossiblyFocusableFilter : createFilter(_isFocusable), // deprecated, but IE requires it
+  false);
 
   var list = [];
 
@@ -2071,17 +1967,16 @@ function queryFocusableStrict() {
         list.push(walker.currentNode);
       }
 
-      list = list.concat(
-        queryFocusableStrict({
-          context: walker.currentNode.shadowRoot,
-          includeOnlyTabbable: includeOnlyTabbable,
-          strategy: strategy,
-        }),
-      );
+      list = list.concat(queryFocusableStrict({
+        context: walker.currentNode.shadowRoot,
+        includeOnlyTabbable: includeOnlyTabbable,
+        strategy: strategy
+      }));
     } else {
       list.push(walker.currentNode);
     }
   } // add context if requested and focusable
+
 
   if (includeContext) {
     if (strategy === 'all') {
@@ -2096,6 +1991,7 @@ function queryFocusableStrict() {
   return list;
 } // NOTE: this selector MUST *never* be used directly,
 
+
 var supports$6 = void 0;
 var selector$1 = void 0;
 
@@ -2108,24 +2004,21 @@ function selector$2() {
     return selector$1;
   } // https://www.w3.org/TR/html5/editing.html#sequential-focus-navigation-and-the-tabindex-attribute
 
-  selector$1 =
-    '' + // IE11 supports.can focus <table> and <td>
-    (supports$6.focusTable ? 'table, td,' : '') + // IE11 supports.can focus <fieldset>
-    (supports$6.focusFieldset ? 'fieldset,' : '') + // Namespace problems of [xlink:href] explained in https://stackoverflow.com/a/23047888/515124
-    // svg a[*|href] does not match in IE9, but since we're filtering
-    // through is/focusable we can include all <a> from SVG
-    'svg a,' + // may behave as 'svg, svg *,' in chrome as *every* svg element with a focus event listener is focusable
-    // navigational elements
-    'a[href],' + // validity determined by is/valid-area.js
-    'area[href],' + // validity determined by is/disabled.js
-    'input, select, textarea, button,' + // browsing context containers
-    'iframe, object, embed,' + // interactive content
-    'keygen,' +
-    (supports$6.focusAudioWithoutControls ? 'audio,' : 'audio[controls],') +
-    (supports$6.focusVideoWithoutControls ? 'video,' : 'video[controls],') +
-    (supports$6.focusSummary ? 'summary,' : '') + // validity determined by is/valid-tabindex.js
-    '[tabindex],' + // editing hosts
-    '[contenteditable]'; // where ShadowDOM is supported, we also want the shadowed focusable elements (via ">>>" or "/deep/")
+
+  selector$1 = '' + ( // IE11 supports.can focus <table> and <td>
+  supports$6.focusTable ? 'table, td,' : '') + ( // IE11 supports.can focus <fieldset>
+  supports$6.focusFieldset ? 'fieldset,' : '') + // Namespace problems of [xlink:href] explained in https://stackoverflow.com/a/23047888/515124
+  // svg a[*|href] does not match in IE9, but since we're filtering
+  // through is/focusable we can include all <a> from SVG
+  'svg a,' + // may behave as 'svg, svg *,' in chrome as *every* svg element with a focus event listener is focusable
+  // navigational elements
+  'a[href],' + // validity determined by is/valid-area.js
+  'area[href],' + // validity determined by is/disabled.js
+  'input, select, textarea, button,' + // browsing context containers
+  'iframe, object, embed,' + // interactive content
+  'keygen,' + (supports$6.focusAudioWithoutControls ? 'audio,' : 'audio[controls],') + (supports$6.focusVideoWithoutControls ? 'video,' : 'video[controls],') + (supports$6.focusSummary ? 'summary,' : '') + // validity determined by is/valid-tabindex.js
+  '[tabindex],' + // editing hosts
+  '[contenteditable]'; // where ShadowDOM is supported, we also want the shadowed focusable elements (via ">>>" or "/deep/")
 
   selector$1 = selectInShadows(selector$1);
   return selector$1;
@@ -2133,16 +2026,16 @@ function selector$2() {
 
 function queryFocusableQuick() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context,
-    includeContext = _ref.includeContext,
-    includeOnlyTabbable = _ref.includeOnlyTabbable;
+      context = _ref.context,
+      includeContext = _ref.includeContext,
+      includeOnlyTabbable = _ref.includeOnlyTabbable;
 
   var _selector = selector$2();
 
   var elements = context.querySelectorAll(_selector); // the selector potentially matches more than really is focusable
 
   var _isFocusable = isFocusable.rules.except({
-    onlyTabbable: includeOnlyTabbable,
+    onlyTabbable: includeOnlyTabbable
   });
 
   var result = [].filter.call(elements, _isFocusable); // add context if requested and focusable
@@ -2156,23 +2049,23 @@ function queryFocusableQuick() {
 
 function queryFocusable() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context,
-    includeContext = _ref.includeContext,
-    includeOnlyTabbable = _ref.includeOnlyTabbable,
-    _ref$strategy = _ref.strategy,
-    strategy = _ref$strategy === undefined ? 'quick' : _ref$strategy;
+      context = _ref.context,
+      includeContext = _ref.includeContext,
+      includeOnlyTabbable = _ref.includeOnlyTabbable,
+      _ref$strategy = _ref.strategy,
+      strategy = _ref$strategy === undefined ? 'quick' : _ref$strategy;
 
   var element = contextToElement({
     label: 'query/focusable',
     resolveDocument: true,
     defaultToDocument: true,
-    context: context,
+    context: context
   });
   var options = {
     context: element,
     includeContext: includeContext,
     includeOnlyTabbable: includeOnlyTabbable,
-    strategy: strategy,
+    strategy: strategy
   };
 
   if (strategy === 'quick') {
@@ -2181,9 +2074,7 @@ function queryFocusable() {
     return queryFocusableStrict(options);
   }
 
-  throw new TypeError(
-    'query/focusable requires option.strategy to be one of ["quick", "strict", "all"]',
-  );
+  throw new TypeError('query/focusable requires option.strategy to be one of ["quick", "strict", "all"]');
 }
 
 var supports$7 = void 0; // Internet Explorer 11 considers fieldset, table, td focusable, but not tabbable
@@ -2193,18 +2084,15 @@ var focusableElementsPattern = /^(fieldset|table|td|body)$/;
 
 function isTabbableRules() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context,
-    _ref$except = _ref.except,
-    except =
-      _ref$except === undefined
-        ? {
-            flexbox: false,
-            scrollable: false,
-            shadow: false,
-            visible: false,
-            onlyTabbable: false,
-          }
-        : _ref$except;
+      context = _ref.context,
+      _ref$except = _ref.except,
+      except = _ref$except === undefined ? {
+    flexbox: false,
+    scrollable: false,
+    shadow: false,
+    visible: false,
+    onlyTabbable: false
+  } : _ref$except;
 
   if (!supports$7) {
     supports$7 = _supports();
@@ -2213,7 +2101,7 @@ function isTabbableRules() {
   var element = contextToElement({
     label: 'is/tabbable',
     resolveDocument: true,
-    context: context,
+    context: context
   });
 
   if (platform.is.BLINK && platform.is.ANDROID && platform.majorVersion > 42) {
@@ -2232,6 +2120,7 @@ function isTabbableRules() {
     } // iframe[tabindex="-1"] and object[tabindex="-1"] inherit the
     // tabbable demotion onto elements of their browsing contexts
 
+
     if (tabindexValue(frameElement) < 0) {
       return false;
     }
@@ -2242,14 +2131,13 @@ function isTabbableRules() {
     } // Webkit and Blink don't consider anything in <object> tabbable
     // Blink fixed that fixed in Chrome 54, Opera 41
 
+
     var frameNodeName = frameElement.nodeName.toLowerCase();
 
     if (frameNodeName === 'object') {
-      var isFixedBlink =
-        (platform.name === 'Chrome' && platform.majorVersion >= 54) ||
-        (platform.name === 'Opera' && platform.majorVersion >= 41);
+      var isFixedBlink = platform.name === 'Chrome' && platform.majorVersion >= 54 || platform.name === 'Opera' && platform.majorVersion >= 41;
 
-      if (platform.is.WEBKIT || (platform.is.BLINK && !isFixedBlink)) {
+      if (platform.is.WEBKIT || platform.is.BLINK && !isFixedBlink) {
         return false;
       }
     }
@@ -2261,13 +2149,7 @@ function isTabbableRules() {
 
   var tabindex = _tabindex === null ? null : _tabindex >= 0;
 
-  if (
-    platform.is.EDGE &&
-    platform.majorVersion >= 14 &&
-    frameElement &&
-    element.ownerSVGElement &&
-    _tabindex < 0
-  ) {
+  if (platform.is.EDGE && platform.majorVersion >= 14 && frameElement && element.ownerSVGElement && _tabindex < 0) {
     // Edge 14+ considers <a xlink:href="…" tabindex="-1"> keyboard focusable
     // if the element is in a nested browsing context
     return true;
@@ -2289,12 +2171,7 @@ function isTabbableRules() {
   if (platform.is.WEBKIT && platform.is.IOS) {
     // iOS only considers a hand full of elements tabbable (keyboard focusable)
     // this holds true even with external keyboards
-    var potentiallyTabbable =
-      (nodeName === 'input' && element.type === 'text') ||
-      element.type === 'password' ||
-      nodeName === 'select' ||
-      nodeName === 'textarea' ||
-      element.hasAttribute('contenteditable');
+    var potentiallyTabbable = nodeName === 'input' && element.type === 'text' || element.type === 'password' || nodeName === 'select' || nodeName === 'textarea' || element.hasAttribute('contenteditable');
 
     if (!potentiallyTabbable) {
       var style = window.getComputedStyle(element, null);
@@ -2307,7 +2184,7 @@ function isTabbableRules() {
   }
 
   if (nodeName === 'use' && _tabindex !== null) {
-    if (platform.is.BLINK || (platform.is.WEBKIT && platform.majorVersion === 9)) {
+    if (platform.is.BLINK || platform.is.WEBKIT && platform.majorVersion === 9) {
       // In Chrome and Safari 9 the <use> element is keyboard focusable even for tabindex="-1"
       return true;
     }
@@ -2340,6 +2217,7 @@ function isTabbableRules() {
         return true;
       } // elements that have [focusable] are automatically keyboard focusable regardless of the attribute's value
 
+
       return element.hasAttribute('focusable') || hasTabbableTabindex;
     }
 
@@ -2347,6 +2225,7 @@ function isTabbableRules() {
       if (supports$7.focusSvgTabindexAttribute && hasTabbableTabindex) {
         return true;
       } // elements that have [focusable] are automatically keyboard focusable regardless of the attribute's value
+
 
       return element.hasAttribute('focusable');
     }
@@ -2430,6 +2309,7 @@ function isTabbableRules() {
     } // IE considers scrollable containers script focusable only,
     // even though their tabIndex property is 0
 
+
     if (isScrollableContainer(element, nodeName)) {
       return false;
     }
@@ -2445,6 +2325,7 @@ function isTabbableRules() {
       } // Children of focusable elements with display:flex are focusable in IE10-11,
       // even though their tabIndex property suggests otherwise
 
+
       if (hasCssDisplayFlex(parentStyle)) {
         // value of tabindex takes precedence
         return hasTabbableTabindex;
@@ -2452,8 +2333,10 @@ function isTabbableRules() {
     }
   } // https://www.w3.org/WAI/PF/aria-practices/#focus_tabindex
 
+
   return element.tabIndex >= 0;
 } // bind exceptions to an iterator callback
+
 
 isTabbableRules.except = function () {
   var except = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -2461,7 +2344,7 @@ isTabbableRules.except = function () {
   var isTabbable = function isTabbable(context) {
     return isTabbableRules({
       context: context,
-      except: except,
+      except: except
     });
   };
 
@@ -2470,32 +2353,33 @@ isTabbableRules.except = function () {
 };
 
 var isFocusRelevantWithoutFlexbox = isFocusRelevant.rules.except({
-  flexbox: true,
+  flexbox: true
 });
 var isTabbableWithoutFlexbox = isTabbableRules.except({
-  flexbox: true,
+  flexbox: true
 }); // provide isTabbable(context) as default iterator callback
 
 var isTabbable = isTabbableRules.except({});
 
 function queryTabbable() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context,
-    includeContext = _ref.includeContext,
-    includeOnlyTabbable = _ref.includeOnlyTabbable,
-    strategy = _ref.strategy;
+      context = _ref.context,
+      includeContext = _ref.includeContext,
+      includeOnlyTabbable = _ref.includeOnlyTabbable,
+      strategy = _ref.strategy;
 
   var _isTabbable = isTabbable.rules.except({
-    onlyTabbable: includeOnlyTabbable,
+    onlyTabbable: includeOnlyTabbable
   });
 
   return queryFocusable({
     context: context,
     includeContext: includeContext,
     includeOnlyTabbable: includeOnlyTabbable,
-    strategy: strategy,
+    strategy: strategy
   }).filter(_isTabbable);
 } // sorts a list of elements according to their order in the DOM
+
 
 function compareDomPosition(a, b) {
   return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
@@ -2532,6 +2416,7 @@ function findInsertionOffsets(list, elements, resolveElement) {
       offset = list.length;
     } // allow the consumer to replace the injected element
 
+
     var injections = nodeArray(resolveElement ? resolveElement(element) : element);
 
     if (!injections.length) {
@@ -2542,7 +2427,7 @@ function findInsertionOffsets(list, elements, resolveElement) {
     insertions.push({
       offset: offset,
       replace: replace,
-      elements: injections,
+      elements: injections
     });
   });
   return insertions;
@@ -2568,11 +2453,13 @@ function insertElementsAtOffsets(list, insertions) {
 
 function mergeInDomOrder() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    list = _ref.list,
-    elements = _ref.elements,
-    resolveElement = _ref.resolveElement; // operate on a copy so we don't mutate the original array
+      list = _ref.list,
+      elements = _ref.elements,
+      resolveElement = _ref.resolveElement; // operate on a copy so we don't mutate the original array
+
 
   var _list = list.slice(0); // make sure the elements we're injecting are provided in DOM order
+
 
   var _elements = nodeArray(elements).slice(0);
 
@@ -2585,7 +2472,7 @@ function mergeInDomOrder() {
   return _list;
 }
 
-var _createClass = (function () {
+var _createClass = function () {
   function defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
@@ -2601,7 +2488,7 @@ var _createClass = (function () {
     if (staticProps) defineProperties(Constructor, staticProps);
     return Constructor;
   };
-})();
+}();
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -2609,7 +2496,7 @@ function _classCallCheck(instance, Constructor) {
   }
 }
 
-var Maps = (function () {
+var Maps = function () {
   function Maps(context) {
     _classCallCheck(this, Maps);
 
@@ -2617,61 +2504,57 @@ var Maps = (function () {
     this.maps = {};
   }
 
-  _createClass(Maps, [
-    {
-      key: 'getAreasFor',
-      value: function getAreasFor(name) {
-        if (!this.maps[name]) {
-          // the map is not defined within the context, so we
-          // have to go find it elsewhere in the document
-          this.addMapByName(name);
+  _createClass(Maps, [{
+    key: 'getAreasFor',
+    value: function getAreasFor(name) {
+      if (!this.maps[name]) {
+        // the map is not defined within the context, so we
+        // have to go find it elsewhere in the document
+        this.addMapByName(name);
+      }
+
+      return this.maps[name];
+    }
+  }, {
+    key: 'addMapByName',
+    value: function addMapByName(name) {
+      var map = getMapByName(name, this._document);
+
+      if (!map) {
+        // if there is no map, the img[usemap] wasn't doing anything anyway
+        return;
+      }
+
+      this.maps[map.name] = queryTabbable({
+        context: map
+      });
+    }
+  }, {
+    key: 'extractAreasFromList',
+    value: function extractAreasFromList(elements) {
+      // remove all <area> elements from the elements list,
+      // but put them the map for later retrieval
+      return elements.filter(function (element) {
+        var nodeName = element.nodeName.toLowerCase();
+
+        if (nodeName !== 'area') {
+          return true;
         }
 
-        return this.maps[name];
-      },
-    },
-    {
-      key: 'addMapByName',
-      value: function addMapByName(name) {
-        var map = getMapByName(name, this._document);
+        var map = element.parentNode;
 
-        if (!map) {
-          // if there is no map, the img[usemap] wasn't doing anything anyway
-          return;
+        if (!this.maps[map.name]) {
+          this.maps[map.name] = [];
         }
 
-        this.maps[map.name] = queryTabbable({
-          context: map,
-        });
-      },
-    },
-    {
-      key: 'extractAreasFromList',
-      value: function extractAreasFromList(elements) {
-        // remove all <area> elements from the elements list,
-        // but put them the map for later retrieval
-        return elements.filter(function (element) {
-          var nodeName = element.nodeName.toLowerCase();
-
-          if (nodeName !== 'area') {
-            return true;
-          }
-
-          var map = element.parentNode;
-
-          if (!this.maps[map.name]) {
-            this.maps[map.name] = [];
-          }
-
-          this.maps[map.name].push(element);
-          return false;
-        }, this);
-      },
-    },
-  ]);
+        this.maps[map.name].push(element);
+        return false;
+      }, this);
+    }
+  }]);
 
   return Maps;
-})();
+}();
 
 function sortArea(elements, context) {
   // images - unless they are focusable themselves, likely not
@@ -2695,11 +2578,11 @@ function sortArea(elements, context) {
     resolveElement: function resolveElement(image) {
       var name = image.getAttribute('usemap').slice(1);
       return maps.getAreasFor(name);
-    },
+    }
   });
 }
 
-var _createClass$1 = (function () {
+var _createClass$1 = function () {
   function defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
@@ -2715,7 +2598,7 @@ var _createClass$1 = (function () {
     if (staticProps) defineProperties(Constructor, staticProps);
     return Constructor;
   };
-})();
+}();
 
 function _classCallCheck$1(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -2723,9 +2606,10 @@ function _classCallCheck$1(instance, Constructor) {
   }
 }
 
-var Shadows = (function () {
+var Shadows = function () {
   function Shadows(context, sortElements) {
     _classCallCheck$1(this, Shadows); // document context we're working with
+
 
     this.context = context; // callback that sorts an array of elements
 
@@ -2742,149 +2626,145 @@ var Shadows = (function () {
     this.elements = {};
   } // remember which hosts we have to sort within later
 
-  _createClass$1(Shadows, [
-    {
-      key: '_registerHost',
-      value: function _registerHost(host) {
-        if (host._sortingId) {
-          return;
-        } // make the ShadowHost identifiable (see cleanup() for undo)
 
-        host._sortingId = 'shadow-' + this.hostCounter++;
-        this.hosts[host._sortingId] = host; // hosts may contain other hosts
+  _createClass$1(Shadows, [{
+    key: '_registerHost',
+    value: function _registerHost(host) {
+      if (host._sortingId) {
+        return;
+      } // make the ShadowHost identifiable (see cleanup() for undo)
 
-        var parentHost = getShadowHost({
-          context: host,
+
+      host._sortingId = 'shadow-' + this.hostCounter++;
+      this.hosts[host._sortingId] = host; // hosts may contain other hosts
+
+      var parentHost = getShadowHost({
+        context: host
+      });
+
+      if (parentHost) {
+        this._registerHost(parentHost);
+
+        this._registerHostParent(host, parentHost);
+      } else {
+        this.inDocument.push(host);
+      }
+    } // remember which host is the child of which other host
+
+  }, {
+    key: '_registerHostParent',
+    value: function _registerHostParent(host, parent) {
+      if (!this.inHost[parent._sortingId]) {
+        this.inHost[parent._sortingId] = [];
+      }
+
+      this.inHost[parent._sortingId].push(host);
+    } // remember which elements a host contains
+
+  }, {
+    key: '_registerElement',
+    value: function _registerElement(element, host) {
+      if (!this.elements[host._sortingId]) {
+        this.elements[host._sortingId] = [];
+      }
+
+      this.elements[host._sortingId].push(element);
+    } // remove shadowed elements from the sequence and register
+    // the ShadowHosts they belong to so we know what to sort
+    // later on
+
+  }, {
+    key: 'extractElements',
+    value: function extractElements(elements) {
+      return elements.filter(function (element) {
+        var host = getShadowHost({
+          context: element
         });
 
-        if (parentHost) {
-          this._registerHost(parentHost);
-
-          this._registerHostParent(host, parentHost);
-        } else {
-          this.inDocument.push(host);
-        }
-      }, // remember which host is the child of which other host
-    },
-    {
-      key: '_registerHostParent',
-      value: function _registerHostParent(host, parent) {
-        if (!this.inHost[parent._sortingId]) {
-          this.inHost[parent._sortingId] = [];
+        if (!host) {
+          return true;
         }
 
-        this.inHost[parent._sortingId].push(host);
-      }, // remember which elements a host contains
-    },
-    {
-      key: '_registerElement',
-      value: function _registerElement(element, host) {
-        if (!this.elements[host._sortingId]) {
-          this.elements[host._sortingId] = [];
-        }
+        this._registerHost(host);
 
-        this.elements[host._sortingId].push(element);
-      }, // remove shadowed elements from the sequence and register
-      // the ShadowHosts they belong to so we know what to sort
-      // later on
-    },
-    {
-      key: 'extractElements',
-      value: function extractElements(elements) {
-        return elements.filter(function (element) {
-          var host = getShadowHost({
-            context: element,
-          });
+        this._registerElement(element, host);
 
-          if (!host) {
-            return true;
-          }
+        return false;
+      }, this);
+    } // inject hosts into the sequence, sort everything,
+    // and recoursively replace hosts by its descendants
 
-          this._registerHost(host);
+  }, {
+    key: 'sort',
+    value: function sort(elements) {
+      var _elements = this._injectHosts(elements);
 
-          this._registerElement(element, host);
+      _elements = this._replaceHosts(_elements);
 
-          return false;
-        }, this);
-      }, // inject hosts into the sequence, sort everything,
-      // and recoursively replace hosts by its descendants
-    },
-    {
-      key: 'sort',
-      value: function sort(elements) {
-        var _elements = this._injectHosts(elements);
+      this._cleanup();
 
-        _elements = this._replaceHosts(_elements);
+      return _elements;
+    } // merge ShadowHosts into the element lists of other ShadowHosts
+    // or the document, then sort the individual lists
 
-        this._cleanup();
+  }, {
+    key: '_injectHosts',
+    value: function _injectHosts(elements) {
+      Object.keys(this.hosts).forEach(function (_sortingId) {
+        var _list = this.elements[_sortingId];
+        var _elements = this.inHost[_sortingId];
+        var _context = this.hosts[_sortingId].shadowRoot;
+        this.elements[_sortingId] = this._merge(_list, _elements, _context);
+      }, this);
+      return this._merge(elements, this.inDocument, this.context);
+    }
+  }, {
+    key: '_merge',
+    value: function _merge(list, elements, context) {
+      var merged = mergeInDomOrder({
+        list: list,
+        elements: elements
+      });
+      return this.sortElements(merged, context);
+    }
+  }, {
+    key: '_replaceHosts',
+    value: function _replaceHosts(elements) {
+      return mergeInDomOrder({
+        list: elements,
+        elements: this.inDocument,
+        resolveElement: this._resolveHostElement.bind(this)
+      });
+    }
+  }, {
+    key: '_resolveHostElement',
+    value: function _resolveHostElement(host) {
+      var merged = mergeInDomOrder({
+        list: this.elements[host._sortingId],
+        elements: this.inHost[host._sortingId],
+        resolveElement: this._resolveHostElement.bind(this)
+      });
 
-        return _elements;
-      }, // merge ShadowHosts into the element lists of other ShadowHosts
-      // or the document, then sort the individual lists
-    },
-    {
-      key: '_injectHosts',
-      value: function _injectHosts(elements) {
-        Object.keys(this.hosts).forEach(function (_sortingId) {
-          var _list = this.elements[_sortingId];
-          var _elements = this.inHost[_sortingId];
-          var _context = this.hosts[_sortingId].shadowRoot;
-          this.elements[_sortingId] = this._merge(_list, _elements, _context);
-        }, this);
-        return this._merge(elements, this.inDocument, this.context);
-      },
-    },
-    {
-      key: '_merge',
-      value: function _merge(list, elements, context) {
-        var merged = mergeInDomOrder({
-          list: list,
-          elements: elements,
-        });
-        return this.sortElements(merged, context);
-      },
-    },
-    {
-      key: '_replaceHosts',
-      value: function _replaceHosts(elements) {
-        return mergeInDomOrder({
-          list: elements,
-          elements: this.inDocument,
-          resolveElement: this._resolveHostElement.bind(this),
-        });
-      },
-    },
-    {
-      key: '_resolveHostElement',
-      value: function _resolveHostElement(host) {
-        var merged = mergeInDomOrder({
-          list: this.elements[host._sortingId],
-          elements: this.inHost[host._sortingId],
-          resolveElement: this._resolveHostElement.bind(this),
-        });
+      var _tabindex = tabindexValue(host);
 
-        var _tabindex = tabindexValue(host);
+      if (_tabindex !== null && _tabindex > -1) {
+        return [host].concat(merged);
+      }
 
-        if (_tabindex !== null && _tabindex > -1) {
-          return [host].concat(merged);
-        }
-
-        return merged;
-      },
-    },
-    {
-      key: '_cleanup',
-      value: function _cleanup() {
-        // remove those identifers we put on the ShadowHost to avoid using Map()
-        Object.keys(this.hosts).forEach(function (key) {
-          delete this.hosts[key]._sortingId;
-        }, this);
-      },
-    },
-  ]);
+      return merged;
+    }
+  }, {
+    key: '_cleanup',
+    value: function _cleanup() {
+      // remove those identifers we put on the ShadowHost to avoid using Map()
+      Object.keys(this.hosts).forEach(function (key) {
+        delete this.hosts[key]._sortingId;
+      }, this);
+    }
+  }]);
 
   return Shadows;
-})();
+}();
 
 function sortShadowed(elements, context, sortElements) {
   var shadows = new Shadows(context, sortElements);
@@ -2923,6 +2803,7 @@ function sortTabindex(elements) {
       tabIndex = tabindexValue(element);
     } // extract elements that don't need sorting
 
+
     if (tabIndex <= 0 || tabIndex === null || tabIndex === undefined) {
       return true;
     }
@@ -2934,6 +2815,7 @@ function sortTabindex(elements) {
       indexes.push(tabIndex);
     } // sort element into the proper bucket
 
+
     map[tabIndex].push(element); // element moved to sorting map, so not "normal" anymore
 
     return false;
@@ -2941,14 +2823,11 @@ function sortTabindex(elements) {
   // then resolve them to their appropriate buckets,
   // then flatten the array of arrays to an array
 
-  var _elements = indexes
-    .sort()
-    .map(function (tabIndex) {
-      return map[tabIndex];
-    })
-    .reduceRight(function (previous, current) {
-      return current.concat(previous);
-    }, normal);
+  var _elements = indexes.sort().map(function (tabIndex) {
+    return map[tabIndex];
+  }).reduceRight(function (previous, current) {
+    return current.concat(previous);
+  }, normal);
 
   return _elements;
 }
@@ -2980,10 +2859,10 @@ function sortElements(elements, _context) {
 
 function queryTabsequence() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    context = _ref.context,
-    includeContext = _ref.includeContext,
-    includeOnlyTabbable = _ref.includeOnlyTabbable,
-    strategy = _ref.strategy;
+      context = _ref.context,
+      includeContext = _ref.includeContext,
+      includeOnlyTabbable = _ref.includeOnlyTabbable,
+      strategy = _ref.strategy;
 
   if (!supports$8) {
     supports$8 = _supports();
@@ -2995,7 +2874,7 @@ function queryTabsequence() {
     context: _context,
     includeContext: includeContext,
     includeOnlyTabbable: includeOnlyTabbable,
-    strategy: strategy,
+    strategy: strategy
   });
 
   if (document.body.createShadowRoot && platform.is.BLINK) {
@@ -3018,6 +2897,7 @@ function queryTabsequence() {
 // across keyboard layouts and may cause various problems
 // (e.g. "*" is "Shift +" on a German Mac keyboard)
 // (e.g. "@" is "Alt L" on a German Mac keyboard)
+
 
 var keycode = {
   // Element Focus
@@ -3054,8 +2934,8 @@ var keycode = {
   backspace: 8,
   // the same logical key may be identified through different keyCodes
   _alias: {
-    91: [92, 93, 224],
-  },
+    91: [92, 93, 224]
+  }
 }; // Function keys (112 - 137)
 // NOTE: not every keyboard knows F13+
 
@@ -3064,6 +2944,7 @@ for (var n = 1; n < 26; n++) {
 } // Number keys (48-57, numpad 96-105)
 // NOTE: not every keyboard knows num-0+
 
+
 for (var _n = 0; _n < 10; _n++) {
   var code = _n + 48;
   var numCode = _n + 96;
@@ -3071,6 +2952,7 @@ for (var _n = 0; _n < 10; _n++) {
   keycode['num-' + _n] = numCode;
   keycode._alias[code] = [numCode];
 } // Latin characters (65 - 90)
+
 
 for (var _n2 = 0; _n2 < 26; _n2++) {
   var _code = _n2 + 65;
@@ -3083,7 +2965,7 @@ var modifier = {
   alt: 'altKey',
   ctrl: 'ctrlKey',
   meta: 'metaKey',
-  shift: 'shiftKey',
+  shift: 'shiftKey'
 };
 var modifierSequence = Object.keys(modifier).map(function (name) {
   return modifier[name];
@@ -3095,7 +2977,7 @@ function createExpectedModifiers(ignoreModifiers) {
     altKey: value,
     ctrlKey: value,
     metaKey: value,
-    shiftKey: value,
+    shiftKey: value
   };
 }
 
@@ -3107,6 +2989,7 @@ function resolveModifiers(modifiers) {
       // we've already covered the all-in operator
       return;
     } // we want the modifier pressed
+
 
     var value = true;
     var operator = token.slice(0, 1);
@@ -3164,7 +3047,7 @@ function keyBinding(text) {
     return {
       keyCodes: _keyCodes,
       modifiers: _modifiers,
-      matchModifiers: matchModifiers.bind(null, _modifiers),
+      matchModifiers: matchModifiers.bind(null, _modifiers)
     };
   });
 } // Node.compareDocumentPosition is available since IE9
@@ -3177,33 +3060,27 @@ function keyBinding(text) {
     listOfElements.some(isChildOf)
 */
 
+
 function getParentComparator() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-    parent = _ref.parent,
-    element = _ref.element,
-    includeSelf = _ref.includeSelf;
+      parent = _ref.parent,
+      element = _ref.element,
+      includeSelf = _ref.includeSelf;
 
   if (parent) {
     return function isChildOf(node) {
-      return Boolean(
-        (includeSelf && node === parent) ||
-          parent.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY,
-      );
+      return Boolean(includeSelf && node === parent || parent.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY);
     };
   } else if (element) {
     return function isParentOf(node) {
-      return Boolean(
-        (includeSelf && element === node) ||
-          node.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_CONTAINED_BY,
-      );
+      return Boolean(includeSelf && element === node || node.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_CONTAINED_BY);
     };
   }
 
-  throw new TypeError(
-    'util/compare-position#getParentComparator required either options.parent or options.element',
-  );
+  throw new TypeError('util/compare-position#getParentComparator required either options.parent or options.element');
 } // Bug 286933 - Key events in the autocomplete popup should be hidden from page scripts
 // @browser-issue Gecko https://bugzilla.mozilla.org/show_bug.cgi?id=286933
+
 
 function whenKey() {
   var map = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -3250,7 +3127,7 @@ function whenKey() {
       // ignore elements within the exempted sub-trees
       var isParentOfElement = getParentComparator({
         element: event.target,
-        includeSelf: true,
+        includeSelf: true
       });
 
       if (filter.some(isParentOfElement)) {
@@ -3280,16 +3157,19 @@ function whenKey() {
   };
 
   return {
-    disengage: disengage,
+    disengage: disengage
   };
 }
 
-function _default({ context } = {}) {
+function _default({
+  context
+} = {}) {
   if (!context) {
     context = document.documentElement;
   } // Make sure the supports tests are run before intercepting the Tab key,
   // or IE10 and IE11 will fail to process the first Tab key event. Not
   // limiting this warm-up to IE because it may be a problem elsewhere, too.
+
 
   queryTabsequence();
   return whenKey({
@@ -3299,7 +3179,7 @@ function _default({ context } = {}) {
       // we're completely taking over the Tab key handling
       event.preventDefault();
       var sequence = queryTabsequence({
-        context: context,
+        context: context
       });
       var backward = event.shiftKey;
       var first = sequence[0];
@@ -3312,6 +3192,7 @@ function _default({ context } = {}) {
         target.focus();
         return;
       } // find current position in tabsequence
+
 
       var currentIndex = void 0;
       var found = sequence.some(function (element, index) {
@@ -3329,8 +3210,9 @@ function _default({ context } = {}) {
         return;
       } // shift focus to previous/next element in the sequence
 
+
       var offset = backward ? -1 : 1;
       sequence[currentIndex + offset].focus();
-    },
+    }
   });
 }

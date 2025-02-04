@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 exports.__esModule = true;
 exports.default = void 0;
@@ -36,9 +36,7 @@ const linkPrefetchStrategy = function (url, options) {
     });
     link.onload = resolve;
     link.onerror = reject;
-    const parentElement =
-      document.getElementsByTagName(`head`)[0] ||
-      document.getElementsByName(`script`)[0].parentNode;
+    const parentElement = document.getElementsByTagName(`head`)[0] || document.getElementsByName(`script`)[0].parentNode;
     parentElement.appendChild(link);
   });
 };
@@ -70,12 +68,10 @@ const prefetch = function (url, options) {
       return;
     }
 
-    supportedPrefetchStrategy(url, options)
-      .then(() => {
-        resolve();
-        preFetched[url] = true;
-      })
-      .catch(() => {}); // 404s are logged to the console anyway
+    supportedPrefetchStrategy(url, options).then(() => {
+      resolve();
+      preFetched[url] = true;
+    }).catch(() => {}); // 404s are logged to the console anyway
   });
 };
 
